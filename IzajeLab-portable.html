@@ -210,7 +210,7 @@ function craneDrawing({radius,boom,pivotHeight=2.5,pivotOffset=0,maxBoom=34,maxR
  if(!Number.isFinite(radius)||radius<=0||!Number.isFinite(boom)||boom<=0)return null;
  const x=radius-pivotOffset,reachable=x>=0&&x<=boom;
  const tipHeight=reachable?pivotHeight+Math.sqrt(Math.max(0,boom*boom-x*x)):pivotHeight;
- const scale=Math.min(640/(Math.max(maxRadius,radius)+5),420/(Math.max(maxBoom+pivotHeight,tipHeight,hookHeight)+4));
+ const scale=Math.min(640/(Math.max(maxRadius,radius)+5),480/(Math.max(maxBoom+pivotHeight,tipHeight,hookHeight)+1.5));
  const originX=145,groundY=490,pivotX=originX+pivotOffset*scale,pivotY=groundY-pivotHeight*scale;
  const loadX=originX+radius*scale,tipX=reachable?loadX:pivotX+boom*scale,tipY=groundY-tipHeight*scale;
  let hookY=groundY-Math.max(hookHeight,Math.min(tipHeight-2,2))*scale;
@@ -335,6 +335,6 @@ $('importPlan').onchange=async e=>{try{const file=e.target.files[0];if(!file)ret
  for(const id of fields){if(['brand','craneModel','config','confirmed'].includes(id)||!Object.hasOwn(data,id))continue;const el=$(id);if(el.type==='checkbox')el.checked=Boolean(data[id]);else el.value=String(data[id]);}$('confirmed').checked=false;modeUI();slingUI();updateWeight();evaluate();evaluateSling();tab('crane');toast('Análisis abierto y recalculado.');
  }catch(err){toast(err.message);}finally{e.target.value='';}};
 
-let refreshing=false;navigator.serviceWorker?.addEventListener('controllerchange',()=>{if(refreshing)return;refreshing=true;location.reload();});
+const hadWorker=!!navigator.serviceWorker?.controller;let refreshing=false;navigator.serviceWorker?.addEventListener('controllerchange',()=>{if(!hadWorker||refreshing)return;refreshing=true;location.reload();});
 
 </script></body></html>

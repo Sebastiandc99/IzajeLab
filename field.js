@@ -21,7 +21,7 @@ export function craneDrawing({radius,boom,pivotHeight=2.5,pivotOffset=0,maxBoom=
  if(!Number.isFinite(radius)||radius<=0||!Number.isFinite(boom)||boom<=0)return null;
  const x=radius-pivotOffset,reachable=x>=0&&x<=boom;
  const tipHeight=reachable?pivotHeight+Math.sqrt(Math.max(0,boom*boom-x*x)):pivotHeight;
- const scale=Math.min(640/(Math.max(maxRadius,radius)+5),420/(Math.max(maxBoom+pivotHeight,tipHeight,hookHeight)+4));
+ const scale=Math.min(640/(Math.max(maxRadius,radius)+5),480/(Math.max(maxBoom+pivotHeight,tipHeight,hookHeight)+1.5));
  const originX=145,groundY=490,pivotX=originX+pivotOffset*scale,pivotY=groundY-pivotHeight*scale;
  const loadX=originX+radius*scale,tipX=reachable?loadX:pivotX+boom*scale,tipY=groundY-tipHeight*scale;
  let hookY=groundY-Math.max(hookHeight,Math.min(tipHeight-2,2))*scale;

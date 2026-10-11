@@ -114,5 +114,5 @@ $('importPlan').onchange=async e=>{try{const file=e.target.files[0];if(!file)ret
  for(const id of fields){if(['brand','craneModel','config','confirmed'].includes(id)||!Object.hasOwn(data,id))continue;const el=$(id);if(el.type==='checkbox')el.checked=Boolean(data[id]);else el.value=String(data[id]);}$('confirmed').checked=false;modeUI();slingUI();updateWeight();evaluate();evaluateSling();tab('crane');toast('Análisis abierto y recalculado.');
  }catch(err){toast(err.message);}finally{e.target.value='';}};
 if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const worker=reg.installing;worker?.addEventListener('statechange',()=>{if(worker.state==='installed'&&reg.waiting&&navigator.serviceWorker.controller)reg.waiting.postMessage({type:'ACTIVATE_UPDATE'});});});if(reg.waiting)reg.waiting.postMessage({type:'ACTIVATE_UPDATE'});}).catch(()=>{});
-let refreshing=false;navigator.serviceWorker?.addEventListener('controllerchange',()=>{if(refreshing)return;refreshing=true;location.reload();});
+const hadWorker=!!navigator.serviceWorker?.controller;let refreshing=false;navigator.serviceWorker?.addEventListener('controllerchange',()=>{if(!hadWorker||refreshing)return;refreshing=true;location.reload();});
 
