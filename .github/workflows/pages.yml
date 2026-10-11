@@ -22,7 +22,7 @@ jobs:
       - name: Preparar sitio estático
         run: |
           mkdir -p _site
-          cp index.html styles.css app.js engine.js data.js sw.js icon.svg manifest.webmanifest .nojekyll _site/
+          cp index.html styles.css app.js engine.js field.js data.js sw.js icon.svg manifest.webmanifest .nojekyll _site/
       - uses: actions/upload-pages-artifact@v4
         if: github.event_name != 'pull_request'
         with:

@@ -1,27 +1,20 @@
-// Smoke tests con DOM mínimo: validan inicialización y flujos, no layout ni navegador real.
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import vm from 'node:vm';
-const root=new URL('../',import.meta.url);
-const fixture=JSON.parse(fs.readFileSync(new URL('dom-fixture.json',import.meta.url)));
+// Smoke tests de flujos con DOM mínimo. Sensor físico y layout requieren dispositivo/navegador.
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
+const root=new URL('../',import.meta.url),fixture=JSON.parse(fs.readFileSync(new URL('dom-fixture.json',import.meta.url)));
 class Element{
- constructor(a){Object.assign(this,a);this.value=a.value??'';this.checked=false;this.disabled=false;this.hidden=Object.hasOwn(a,'hidden');this.type=a.type||a.tag;this.events={};this._html='';this.classList={toggle(){}};}
+ constructor(a){Object.assign(this,a);this.value=a.initialValue??a.value??'';this.checked=false;this.disabled=false;this.hidden=Object.hasOwn(a,'hidden');this.type=a.type||a.tag;this.events={};this._html='';this.classList={toggle(){}};}
  set innerHTML(s){this._html=s;if(this.tag==='select'){this.opts=[...s.matchAll(/<option value="([^"]*)">([^<]*)<\/option>/g)].map(m=>({value:m[1],textContent:m[2]}));this.value=this.opts[0]?.value||'';}}
- get innerHTML(){return this._html;}
- get selectedOptions(){return this.opts?.filter(o=>o.value===this.value)||[];}
- addEventListener(k,fn){(this.events[k]??=[]).push(fn);}
- querySelectorAll(){return [];}
+ get innerHTML(){return this._html;}get selectedOptions(){return this.opts?.filter(o=>o.value===this.value)||[];}
+ addEventListener(k,f){(this.events[k]??=[]).push(f);}querySelectorAll(){return [];}focus(){}
 }
-function boot(){const elements=Object.fromEntries(Object.entries(fixture).map(([id,a])=>[id,new Element(a)]));
- for(const [id,value] of Object.entries({solveMode:'check',unit:'kg',slingType:'flat',hitch:'legs2',angleMode:'vertical',customPolicy:'exact'}))elements[id].value=value;
- const document={getElementById:id=>elements[id],querySelectorAll:()=>[],createElement:()=>({click(){}})};
- const storage=new Map(),ctx={document,localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)},navigator:{},location:{protocol:'file:'},window:{print(){},confirm:()=>true},console,structuredClone,Intl,Date,Number,Math,JSON,URL,Blob,setTimeout:()=>0,clearTimeout(){}};
- const code=['data.js','engine.js','app.js'].map(name=>fs.readFileSync(new URL(name,root),'utf8').replace(/^import .*?;\s*$/gm,'').replace(/\bexport\s+(?=const|function)/g,'')).join('\n');
- vm.createContext(ctx);vm.runInContext(code,ctx,{timeout:2000});return {e:elements,ctx};}
-test('UI inicializa ambos resultados y tabla sin excepciones',()=>{const {e}=boot();assert.match(e.craneResult.innerHTML,/55,88/);assert.match(e.slingResult.innerHTML,/89,29/);assert.match(e.loadTable.innerHTML,/10,65/);assert.equal(e.craneModel.value,'sany-stc250');});
-test('UI cambia kg a t conservando resultado físico',()=>{const {e}=boot();e.unit.value='t';e.unit.onchange();assert.equal(Number(e.load.value),5);e.calculate.onclick();assert.match(e.craneResult.innerHTML,/55,88/);});
-test('UI búsqueda de radio con pluma elegida',()=>{const {e}=boot();e.boom.value='14.5';e.solveMode.value='radius';e.solveMode.onchange();e.calculate.onclick();assert.match(e.craneResult.innerHTML,/RADIO MÁXIMO TABULADO/);assert.match(e.craneResult.innerHTML,/>10 <small>m/);assert.match(e.alternatives.innerHTML,/combinaciones/);});
-test('UI fallo no conserva un resultado viejo',()=>{const {e}=boot();e.load.value='-5';e.calculate.onclick();assert.match(e.craneResult.innerHTML,/No se puede emitir resultado/);assert.equal(e.craneDiagram.innerHTML,'');});
-test('UI marca sin tabla no fabrica capacidad',()=>{const {e}=boot();e.brand.value='Tadano';e.brand.onchange();e.calculate.onclick();assert.match(e.craneResult.innerHTML,/No hay tabla numérica/);assert.equal(e.calculate.disabled,true);});
-test('UI eslingas rechaza β fuera de rango y conserva límites',()=>{const {e}=boot();e.slingAngle.value='61';e.calculateSling.onclick();assert.match(e.slingResult.innerHTML,/Sin resultado de eslingado/);assert.equal(e.useSlingHeight.disabled,true);});
+function boot(){const e=Object.fromEntries(Object.entries(fixture).map(([id,a])=>[id,new Element(a)]));const document={getElementById:id=>e[id],querySelectorAll:()=>[],createElement:()=>({click(){}}),addEventListener(){}};
+ const store=new Map(),window={print(){},confirm:()=>true,addEventListener(){},removeEventListener(){},isSecureContext:true};const ctx={document,window,localStorage:{getItem:k=>store.get(k),setItem:(k,v)=>store.set(k,v)},navigator:{},location:{protocol:'file:'},console,structuredClone,Intl,Date,Number,Math,JSON,URL,Blob,setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){}};
+ const code=['data.js','engine.js','field.js','app.js'].map(name=>fs.readFileSync(new URL(name,root),'utf8').replace(/^import .*?;\s*$/gm,'').replace(/\bexport\s+(?=const|function)/g,'')).join('\n');vm.createContext(ctx);vm.runInContext(code,ctx,{timeout:2000});return {e,ctx};}
+function load(e,n='5000'){e.load.value=n;(e.load.events.input||[]).forEach(f=>f());}
+test('peso único obligatorio: todos los modos rechazan ausencia de carga',()=>{const {e}=boot();assert.equal(e.load.value,'');for(const m of ['check','radius','boom']){e.solveMode.value=m;e.solveMode.onchange();e.calculate.onclick();assert.match(e.craneResult.innerHTML,/peso de carga/);}e.calculateSling.onclick();assert.match(e.slingResult.innerHTML,/peso de carga/);});
+test('misma carga alimenta grúa y eslingas sin campo duplicado',()=>{const {e}=boot();assert.equal(e.slingLoad,undefined);load(e);e.calculate.onclick();e.calculateSling.onclick();assert.match(e.craneResult.innerHTML,/55,88/);assert.match(e.slingResult.innerHTML,/89,29/);});
+test('cambiar kg/t conserva carga y no modifica pesos auxiliares en kg',()=>{const {e}=boot();load(e);e.unit.value='t';e.unit.onchange();assert.equal(Number(e.load.value),5);assert.equal(Number(e.hook.value),320);e.calculate.onclick();assert.match(e.craneResult.innerHTML,/55,88/);});
+test('radio de croquis cambia antes de calcular; después usa radio ingresado',()=>{const {e}=boot();load(e);e.boom.value='14.5';e.boom.events.input[0]();e.radius.value='10';e.radius.events.input[0]();assert.match(e.craneDiagram.innerHTML,/R = 10 m/);e.calculate.onclick();assert.match(e.craneDiagram.innerHTML,/R = 10 m/);assert.match(e.craneResult.innerHTML,/72,27/);});
+test('búsqueda de radio no muestra un valor calculado anterior como vigente',()=>{const {e}=boot();load(e);e.boom.value='14.5';e.solveMode.value='radius';e.solveMode.onchange();assert.match(e.craneDiagram.innerHTML,/R por calcular/);e.calculate.onclick();assert.match(e.craneResult.innerHTML,/>10 <small>m/);assert.match(e.craneDiagram.innerHTML,/R = 10 m/);});
+test('sin tabla o con peso inválido no conserva éxito',()=>{const {e}=boot();load(e,'-5');e.calculate.onclick();assert.match(e.craneResult.innerHTML,/Sin resultado/);e.brand.value='Tadano';e.brand.onchange();e.calculate.onclick();assert.match(e.craneResult.innerHTML,/necesita una tabla/);assert.equal(e.calculate.disabled,true);});
+test('β fuera de rango bloqueado y sensor no muestra cero sin lectura',()=>{const {e}=boot();load(e);e.slingAngle.value='61';e.calculateSling.onclick();assert.match(e.slingResult.innerHTML,/Sin resultado de eslingado/);e.showSensor.onclick();assert.equal(e.sensorBeta.textContent,'—');assert.equal(e.applySensor.disabled,true);});

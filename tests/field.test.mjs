@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {phoneInclinationFromGravity,phoneInclinationFromOrientation,sensorReading,craneDrawing} from '../field.js';
+const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-8,`${a} vs ${b}`);
+test('sensor: teléfono horizontal, inclinado y vertical (borde largo)',()=>{near(phoneInclinationFromGravity({x:0,y:0,z:9.81}),0);near(phoneInclinationFromGravity({x:0,y:9.81,z:0}),90);near(phoneInclinationFromGravity({x:0,y:9.81/Math.sqrt(2),z:9.81/Math.sqrt(2)}),45);});
+test('sensor: invertir teléfono o girarlo sobre el borde conserva inclinación',()=>{near(phoneInclinationFromGravity({x:9.81*Math.sqrt(3)/2,y:-9.81/2,z:0}),30);near(phoneInclinationFromOrientation(135),45);near(phoneInclinationFromOrientation(-90),90);});
+test('sensor: ausencia, componentes nulos y aceleración no plausible no son 0 grados',()=>{for(const v of [null,{x:null,y:null,z:null},{x:0,y:0,z:0},{x:0,y:30,z:0}])assert.equal(phoneInclinationFromGravity(v),null);assert.equal(phoneInclinationFromOrientation(null),null);});
+test('sensor: lectura estable requiere historial y frescura',()=>{const samples=Array.from({length:10},(_,i)=>({angle:45,time:1000+i*100}));const r=sensorReading(samples,1900);assert.equal(r.stable,true);near(r.beta,45);assert.equal(sensorReading(samples,2700),null);assert.equal(sensorReading(samples.slice(-2),1900).stable,false);});
+test('sensor: movimiento angular no habilita tomar muestra',()=>{const samples=Array.from({length:10},(_,i)=>({angle:40+i,time:1000+i*100}));assert.equal(sensorReading(samples,1900).stable,false);});
+test('croquis: radio dibujado coincide con distancia ingresada',()=>{const a=craneDrawing({radius:8,boom:14.5,maxBoom:14.5,maxRadius:14.5}),b=craneDrawing({radius:10,boom:14.5,maxBoom:14.5,maxRadius:14.5});near((a.loadX-a.originX)/a.scale,8);near((b.loadX-b.originX)/b.scale,10);near(a.scale,b.scale);near((b.loadX-b.originX)/(a.loadX-a.originX),1.25);});
+test('croquis: longitud de pluma y radio utilizan la misma escala',()=>{const a=craneDrawing({radius:10,boom:14.5,pivotOffset:-1,maxBoom:14.5,maxRadius:14.5});near(Math.hypot(a.tipX-a.pivotX,a.tipY-a.pivotY)/a.scale,14.5);near((a.loadX-a.originX)/a.scale,10);});
+test('croquis: radio físicamente no alcanzable permanece visible y marcado',()=>{const a=craneDrawing({radius:20,boom:10,maxBoom:10,maxRadius:10});assert.equal(a.reachable,false);near((a.loadX-a.originX)/a.scale,20);assert.ok(a.loadX>a.tipX);});

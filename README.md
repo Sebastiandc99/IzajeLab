@@ -1,4 +1,4 @@
-# IzajeLab
+# IzajeLab · v2
 
 Herramienta en español para planificar izajes con tablas de grúas y análisis de eslingas. Aplicación estática sin dependencias, preparada para GitHub Pages y uso móvil.
 
@@ -6,12 +6,23 @@ Herramienta en español para planificar izajes con tablas de grúas y análisis 
 
 **Aplicación:** https://sebastiandc99.github.io/IzajeLab/ (GitHub Pages).
 
+## Interfaz de campo (v2)
+
+- Peso obligatorio único para todos los cálculos, sin valor de carga de ejemplo precargado.
+- Tres objetivos: verificar porcentaje, buscar radio máximo y buscar pluma con radio/altura de gancho.
+- Radio/pluma en croquis proporcional a la misma escala, actualizado mientras se escriben los datos.
+- Sin largo/ancho de carga: H es suelo a gancho. Los pesos de gancho/aparejos y ajustes se despliegan solo cuando se necesitan.
+- Inclinómetro: borde largo del teléfono paralelo al ramal, lectura estable de β desde vertical y θ desde horizontal, toma de ángulo y calibración horizontal.
+- Sensores solo tras pulsar Iniciar y permitir acceso si el navegador lo pide. HTTPS requerido. Sin hardware o sin lecturas válidas, no muestra cero ni permite tomar una medida.
+
+El inclinómetro usa aceleración con gravedad del eje Y físico del teléfono y, como alternativa, orientación β del dispositivo. No usa velocidad angular como ángulo. Filtra lecturas, exige estabilidad y frescura, y redondea β tomado hacia arriba a 0,1°. La pantalla girada no cambia el borde físico que se debe apoyar. La medición es orientativa y requiere verificación sobre un dispositivo real.
+
 ## Funciones
 
 - Verificar utilización con peso bruto, radio y pluma.
 - Buscar radio máximo tabulado para una pluma y carga determinadas.
 - Buscar plumas compatibles con radio y altura; explorar alternativas de radio/pluma.
-- Calcular radio aproximado a partir de ángulo de pluma, longitud y offset del pivote.
+- Croquis de pluma/radio y filtro de altura del gancho con pivote y reserva configurables.
 - Aplicar límite de proyecto de 75% o menor; deducciones separadas de masa suspendida.
 - Eslingas textiles, cadena y cable de acero; directa, estrangulada, cesta y ramales.
 - Ingresar ángulo desde vertical, horizontal o incluido; obtenerlo desde separación/altura o longitud.
@@ -36,7 +47,7 @@ Utilización = (carga + gancho + aparejos + otros suspendidos) / (tabla bruta �
 
 Plumas en columnas exactas. SANY: radios exactos. Grove: mínimo de las dos celdas contiguas válidas para radio intermedio; no interpola ni extrapola ni atraviesa celdas vacías. Las búsquedas devuelven máximos dentro de los radios tabulados, no un máximo continuo ni una ubicación aprobada.
 
-Geometría rígida aproximada: R = offset + L cos(ángulo); altura punta = altura pivote + L sin(ángulo). La punta requerida incluye cota base + alto carga + altura aparejo + reserva de cabezal. Pivote, offset y reserva iniciales son datos ilustrativos ingresados por usuario. Se necesita el diagrama de alcance real para considerar flexión, cabezal, obstáculos y giro.
+Geometría rígida aproximada: R = offset + L cos(ángulo); altura punta = altura pivote + L sin(ángulo). En v2 la punta requerida incluye altura del gancho H + reserva de cabezal. H se mide desde el suelo y ya contempla el aparejo sobre la carga. Pivote, offset y reserva iniciales son datos ilustrativos ingresados por usuario. Se necesita el diagrama de alcance real para considerar flexión, cabezal, obstáculos y giro.
 
 Tensión simétrica: T = W/(n cos β). La capacidad también se limita por factores de banda SpanSet; 4 ramales cuentan como 2 portantes por defecto y 3 solo con reparto uniforme justificado. Los resultados no incluyen pérdida por impactos, aristas, químicos, temperatura ni accesorios. Cable: WLL certificado del conjunto para el amarre/ángulo real.
 
@@ -59,7 +70,7 @@ Para servir localmente: `python3 -m http.server 8000` dentro de este directorio.
 
 `IzajeLab-portable.html` es una versión autocontenida que se puede abrir directamente sin servidor (generada por `python3 build_portable.py`). No registra service worker. El guardado local depende de permisos del navegador; exportar JSON es la copia portable.
 
-La sesión de creación verificó fórmulas y estructura, pero no pudo ejecutar revisión visual en un navegador. Antes del uso en campo se requieren revisión humana de tablas y validación contra el equipo real.
+Las pruebas cubren el motor, los flujos y las conversiones de inclinación/escala. El sensor requiere verificación física con el teléfono de campo. Antes de operar se requiere cotejo de tablas y revisión contra la unidad real.
 
 ## Importar tabla
 
