@@ -1,0 +1,9 @@
+const CACHE='izajelab-v1.0.0';
+const ASSETS=['./','./index.html','./styles.css','./app.js','./engine.js','./data.js','./icon.svg','./manifest.webmanifest'];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('izajelab-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
+self.addEventListener('fetch',e=>{
+ if(e.request.method!=='GET'||new URL(e.request.url).origin!==location.origin)return;
+ // Archivos de una misma versión: conservar consistencia entre motor y tablas offline.
+ e.respondWith(caches.open(CACHE).then(async c=>{const hit=await c.match(e.request);if(hit)return hit;try{return await fetch(e.request);}catch{return e.request.mode==='navigate'?await c.match('./index.html'):Response.error();}}));
+});
