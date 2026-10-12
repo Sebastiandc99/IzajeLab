@@ -1,4 +1,4 @@
-# IzajeLab · v3.3
+# IzajeLab · v4.0
 
 Herramienta en español para planificar izajes con tablas de grúas y análisis de eslingas. Aplicación estática sin dependencias, preparada para GitHub Pages y uso móvil.
 
@@ -130,3 +130,17 @@ Al ingresar radio y pluma explícitos, si no se puede verificar la grúa con la 
 La estimación **no es capacidad autorizada**: no calcula una utilización admisible, no aprueba el límite del 75%, no propone medidas ni rellena campos. Se exporta como `referenceEstimate` con `verificationEligible:false`, separado de `resultCrane:null`. La impresión de un cálculo de grúa exige resultado verificable. La falla del lingado bloquea también esta estimación.
 
 Se mantienen los huecos internos y modos de extensión separados. Con un eje exacto se usa el tramo publicado de esa fila/columna; fuera de él solo se prolongan sus dos celdas contiguas del borde. No se estima con valores faltantes, un único punto sin pendiente o un resultado no positivo. Una proyección matemática no demuestra alcance físico ni estabilidad.
+
+## Mosaico y dos posiciones · v4.0
+
+La pantalla principal tiene cuatro bloques: carga, grúa, lingado/ángulo y posiciones. Se conservan catálogo, tablas propias, importación/exportación, sensor de teléfono y dimensiones desplegables.
+
+Se evalúan **posición 1 inicial** y **posición 2 final**, cada una con radio de grúa R, longitud de pluma L, ángulo θ desde la horizontal y altura H opcional. El lingado comparte el peso y su ángulo β desde la vertical. R siempre fue el radio de la grúa (eje de giro al centro de la carga); no es radio de eslinga.
+
+Cada resultado informa capacidad de tabla, capacidad disponible después de deducciones, peso suspendido y carga admisible al límite de proyecto en **tn (1 tn = 1000 kg)**. Los dos croquis conservan coordenadas propias y marcadores SVG independientes. La posición con mayor utilización gobierna el resultado conjunto. **APTO** exige ambas posiciones numéricamente compatibles y dentro del límite (máximo 75%), más lingado dentro de WLL; es un chequeo preliminar, no aprobación operativa. Una estimación matemática nunca completa estas condiciones.
+
+Geometría rígida aproximada: R = offset de pivote + L × cos(θ). Con R y θ se obtiene L; con L y θ, R; si θ queda vacío se calcula desde R/L. Cuando se ingresan R/L/θ se verifica coherencia con tolerancia numérica 0,5°; no es tolerancia del fabricante. Se verifica el ángulo máximo de la configuración aun con H vacía. Las capacidades siempre proceden de tabla, según su criterio de intermedios; no proceden del ángulo ni del tamaño nominal.
+
+Los campos vacíos de cada posición son propuestas independientes, marcadas como tales. No se copia la posición inicial como dato confirmado de la final. Dos extremos verificados no verifican el recorrido completo: radios y sectores intermedios, deformaciones, condiciones de obra y manual de unidad siguen siendo necesarios.
+
+Formato de análisis `izajelab-plan-v4`: incluye ambos grupos de datos, resultados de posiciones, evaluación conjunta y flags de datos propuestos. Se siguen abriendo v1/v2/v3; la posición final ausente se vuelve a proponer desde la tabla y requiere cotejo. El PDF incluye ambas posiciones y croquis, θ de grúa, β de eslingas, capacidades en tn, fuentes y resultado conjunto.
