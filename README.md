@@ -1,4 +1,4 @@
-# IzajeLab · v2
+# IzajeLab · v3
 
 Herramienta en español para planificar izajes con tablas de grúas y análisis de eslingas. Aplicación estática sin dependencias, preparada para GitHub Pages y uso móvil.
 
@@ -6,10 +6,20 @@ Herramienta en español para planificar izajes con tablas de grúas y análisis 
 
 **Aplicación:** https://sebastiandc99.github.io/IzajeLab/ (GitHub Pages).
 
-## Interfaz de campo (v2)
+## Flujo visual (v3)
+
+- No hay selector de objetivos. Peso obligatorio; radio, pluma y altura son campos opcionales.
+- Los campos ingresados se conservan. Los vacíos se buscan con la tabla: radio conocido → menor pluma compatible; radio vacío → mayor radio tabulado compatible y menor pluma en ese radio.
+- Si la altura se deja vacía, se propone altura disponible aproximada por geometría rígida (no es una celda de capacidad). Los campos autocompletados quedan marcados y se vuelven a buscar cuando cambia la carga.
+- Antes de calcular se exige elegir lingado. Si falta, aparece “Completar tipo de lingado” con acceso al selector visual.
+- Ocho dibujos táctiles: vertical, estrangulado, cesta paralela con balancín, cesta inclinada, 2 directos, 2 estrangulados, 3 ramales, 4 ramales.
+- El dibujo grande reproduce el amarre elegido. El deslizador cambia el ángulo y abre/cierra los ramales. La capacidad de las eslingas se verifica por separado usando el WLL ingresado.
+- Dos estrangulados: factor 0,8 aplicado al factor de 2 ramales de la tabla SpanSet. Cesta paralela requiere balancín: su peso debe estar incluido entre los aparejos.
+
+## Funciones heredadas
 
 - Peso obligatorio único para todos los cálculos, sin valor de carga de ejemplo precargado.
-- Tres objetivos: verificar porcentaje, buscar radio máximo y buscar pluma con radio/altura de gancho.
+- Búsqueda automática de los datos de radio, pluma y altura que no se ingresan.
 - Radio/pluma en croquis proporcional a la misma escala, actualizado mientras se escriben los datos.
 - Sin largo/ancho de carga: H es suelo a gancho. Los pesos de gancho/aparejos y ajustes se despliegan solo cuando se necesitan.
 - Inclinómetro: borde largo del teléfono paralelo al ramal, lectura estable de β desde vertical y θ desde horizontal, toma de ángulo y calibración horizontal.
@@ -47,7 +57,7 @@ Utilización = (carga + gancho + aparejos + otros suspendidos) / (tabla bruta �
 
 Plumas en columnas exactas. SANY: radios exactos. Grove: mínimo de las dos celdas contiguas válidas para radio intermedio; no interpola ni extrapola ni atraviesa celdas vacías. Las búsquedas devuelven máximos dentro de los radios tabulados, no un máximo continuo ni una ubicación aprobada.
 
-Geometría rígida aproximada: R = offset + L cos(ángulo); altura punta = altura pivote + L sin(ángulo). En v2 la punta requerida incluye altura del gancho H + reserva de cabezal. H se mide desde el suelo y ya contempla el aparejo sobre la carga. Pivote, offset y reserva iniciales son datos ilustrativos ingresados por usuario. Se necesita el diagrama de alcance real para considerar flexión, cabezal, obstáculos y giro.
+Geometría rígida aproximada: R = offset + L cos(ángulo); altura punta = altura pivote + L sin(ángulo). La punta requerida incluye altura del gancho H + reserva de cabezal. H se mide desde el suelo y ya contempla el aparejo sobre la carga. Pivote, offset y reserva iniciales son datos ilustrativos ingresados por usuario. Se necesita el diagrama de alcance real para considerar flexión, cabezal, obstáculos y giro.
 
 Tensión simétrica: T = W/(n cos β). La capacidad también se limita por factores de banda SpanSet; 4 ramales cuentan como 2 portantes por defecto y 3 solo con reparto uniforme justificado. Los resultados no incluyen pérdida por impactos, aristas, químicos, temperatura ni accesorios. Cable: WLL certificado del conjunto para el amarre/ángulo real.
 

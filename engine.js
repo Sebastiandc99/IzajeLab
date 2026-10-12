@@ -73,15 +73,15 @@ export function slingCheck(p){
  const load=number(p.loadKg,'carga sobre eslingas',0.001)+number(p.belowKg,'peso bajo eslingas'),wll=number(p.wllKg,'WLL vertical por eslinga/ramal',0.001);
  const type=p.type,mode=p.hitch;
  if(!['flat','round','chain','wire'].includes(type))throw Error('Tipo de eslinga no válido.');
- if(!['straight','choke','basket','legs2','legs3','legs4','asym2'].includes(mode))throw Error('Configuración no válida.');
+ if(!['straight','choke','basket','legs2','legs2choke','legs3','legs4','asym2'].includes(mode))throw Error('Configuración no válida.');
  if(type==='wire'){
  const assembly=number(p.assemblyWll,'WLL certificado para configuración y ángulo',0.001);
  return {load,assemblyCapacity:assembly,percent:load/assembly*100,pass:load<=assembly,certifiedOnly:true,notes:['Cable de acero: se usa el WLL del conjunto certificado para este ángulo/amarre; no se aplican factores textiles.']};
  }
  if(type==='chain'&&mode==='basket')throw Error('Cesta de cadena: requiere la tabla del conjunto específico; no se usa factor de cesta textil.');
  let beta=['straight','choke'].includes(mode)?0:betaFromInput(p),n=mode==='legs3'?3:mode==='legs4'?(p.equalized?3:2):mode==='straight'||mode==='choke'?1:2;
- const choke=mode==='choke'?0.8:1;let bandFactor=n===1?choke:n===3?(beta<=45?2.1:1.5):(mode==='basket'&&beta<=7?2:beta<=45?1.4:1);
- let factor=Math.min(bandFactor,n*Math.cos(rad(beta))*choke),tension=load/(n*Math.cos(rad(beta))),details=null;
+ const choke=['choke','legs2choke'].includes(mode)?0.8:1;let bandFactor=n===1?1:n===3?(beta<=45?2.1:1.5):(mode==='basket'&&beta<=7?2:beta<=45?1.4:1);
+ let factor=Math.min(bandFactor*choke,n*Math.cos(rad(beta))*choke),tension=load/(n*Math.cos(rad(beta))),details=null;
  if(mode==='asym2'){
  const span=number(p.span,'separación de puntos',0.001),cog=number(p.cog,'CG desde punto izquierdo',0.001,span-0.001),h=number(p.slingRise,'altura gancho',0.001);
  const b1=deg(Math.atan2(cog,h)),b2=deg(Math.atan2(span-cog,h));if(Math.max(b1,b2)>60)throw Error('Algún ramal supera β=60°.');
@@ -93,5 +93,5 @@ export function slingCheck(p){
  const capacity=wll*factor,requiredWll=load/factor;
  const reach=Number(p.span)>0?Number(p.span)/2:null;
  const rise=beta===0?null:reach/Math.tan(rad(beta)),length=reach===null?null:(beta===0?null:reach/Math.sin(rad(beta)));
- return {load,beta,horizontal:90-beta,included:2*beta,effectiveLegs:n,factor,assemblyCapacity:capacity,requiredWll,tensionKg:tension,tensionKn:tension*G/1000,percent:load/capacity*100,pass:load<=capacity+1e-8,rise,length,details,notes:[mode==='legs4'&&!p.equalized?'4 ramales: se considera que solo 2 comparten la carga.':mode==='asym2'?'CG desplazado: tensiones por equilibrio; WLL preliminar conservador como 1 ramal a β máximo. Confirmar criterio del fabricante.':'Reparto estático uniforme supuesto.',mode==='choke'?'Factor 0,8: confirmar geometría del estrangulado en las instrucciones del producto.':'Factores por bandas SpanSet: el certificado del conjunto y sus componentes prevalece.']};
+ return {load,beta,horizontal:90-beta,included:2*beta,effectiveLegs:n,factor,assemblyCapacity:capacity,requiredWll,tensionKg:tension,tensionKn:tension*G/1000,percent:load/capacity*100,pass:load<=capacity+1e-8,rise,length,details,notes:[mode==='legs4'&&!p.equalized?'4 ramales: se considera que solo 2 comparten la carga.':mode==='asym2'?'CG desplazado: tensiones por equilibrio; WLL preliminar conservador como 1 ramal a β máximo. Confirmar criterio del fabricante.':'Reparto estático uniforme supuesto.',['choke','legs2choke'].includes(mode)?'Factor 0,8: confirmar geometría del estrangulado en las instrucciones del producto.':'Factores por bandas SpanSet: el certificado del conjunto y sus componentes prevalece.']};
 }
