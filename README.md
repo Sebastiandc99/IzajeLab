@@ -1,10 +1,18 @@
-# IzajeLab · v3.1
+# IzajeLab · v3.2
 
 Herramienta en español para planificar izajes con tablas de grúas y análisis de eslingas. Aplicación estática sin dependencias, preparada para GitHub Pages y uso móvil.
 
 **Repositorio:** https://github.com/Sebastiandc99/IzajeLab
 
 **Aplicación:** https://sebastiandc99.github.io/IzajeLab/ (GitHub Pages).
+
+## Verificación integrada (v3.2)
+
+- Se verifica el lingado al seleccionarlo y ante cambios de peso, WLL, material, ángulo, geometría de eslingas, reparto o lectura del sensor.
+- Sobrecarga, ángulo inválido, WLL faltante o configuración no respaldada dejan el izaje bloqueado con su razón. Se borran propuestas previas y no se consulta la tabla de grúa al pulsar Calcular.
+- Solo un lingado que cumple su WLL permite calcular la grúa. El porcentaje de grúa sigue siendo un chequeo numérico preliminar.
+- R/L intermedios conservan sus valores en el formulario, la geometría y el croquis; los valores de referencia de tabla y la nota del fabricante se muestran separados.
+- Tablas propias: radios y plumas exactos por defecto. El criterio siguiente mayor o mínimo de vecinos exige indicar nota/página/revisión del manual. Los planes anteriores siguen siendo importables.
 
 ## Flujo visual (v3)
 
@@ -13,7 +21,7 @@ Herramienta en español para planificar izajes con tablas de grúas y análisis 
 - Si la altura se deja vacía, se propone altura disponible aproximada por geometría rígida (no es una celda de capacidad). Los campos autocompletados quedan marcados y se vuelven a buscar cuando cambia la carga.
 - Antes de calcular se exige elegir lingado. Si falta, aparece “Completar tipo de lingado” con acceso al selector visual.
 - Ocho dibujos táctiles: vertical, estrangulado, cesta paralela con balancín, cesta inclinada, 2 directos, 2 estrangulados, 3 ramales, 4 ramales.
-- El dibujo grande reproduce el amarre elegido. El deslizador cambia el ángulo y abre/cierra los ramales. La capacidad de las eslingas se verifica por separado usando el WLL ingresado.
+- El dibujo grande reproduce el amarre elegido. El deslizador cambia el ángulo y abre/cierra los ramales. La capacidad de las eslingas se verifica automáticamente usando el WLL ingresado; una falla bloquea el cálculo general de grúa.
 - Dos estrangulados: factor 0,8 aplicado al factor de 2 ramales de la tabla SpanSet. Cesta paralela requiere balancín: su peso debe estar incluido entre los aparejos.
 
 ## Acceso al ángulo (v3.1.3)
@@ -69,7 +77,7 @@ Consultas de fuentes: 11/10/2026. Los datos precargados son referencias de folle
 
 Utilización = (carga + gancho + aparejos + otros suspendidos) / (tabla bruta − deducciones) × 100. El criterio 75% se aplica a capacidad publicada; no vuelve a aplicar el criterio de vuelco SAE 85%.
 
-Plumas en columnas exactas. SANY: radios exactos. Grove: mínimo de las dos celdas contiguas válidas para radio intermedio; no interpola ni extrapola ni atraviesa celdas vacías. Las búsquedas devuelven máximos dentro de los radios tabulados, no un máximo continuo ni una ubicación aprobada.
+Las columnas y filas almacenan valores exactos. SANY STC250/300/500: para R o L intermedios se usan el siguiente radio y largo mayores de la configuración seleccionada (folletos p.12, nota 6). Grove RT540E: mínimo de celdas contiguas válidas para R y/o L intermedios (p.14, nota 3), como criterio conservador. SANY STC800 y Tadano GT-600EX mantienen radios/plumas exactos porque los documentos precargados no definen una regla cotejada. No se aplica interpolación lineal ni se extrapola fuera del rango; todas las celdas de los límites del intervalo deben existir. Las búsquedas devuelven máximos dentro de los radios tabulados, no un máximo continuo ni una ubicación aprobada.
 
 Geometría rígida aproximada: R = offset + L cos(ángulo); altura punta = altura pivote + L sin(ángulo). La punta requerida incluye altura del gancho H + reserva de cabezal. H se mide desde el suelo y ya contempla el aparejo sobre la carga. Pivote, offset y reserva iniciales son datos ilustrativos ingresados por usuario. Se necesita el diagrama de alcance real para considerar flexión, cabezal, obstáculos y giro.
 

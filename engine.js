@@ -12,7 +12,9 @@ export function validateCrane(c){
  for(const cfg of c.configs){
  if(ids.has(cfg.id)||!cfg.id||!cfg.name)throw Error('Configuraciones sin identificar o repetidas.');ids.add(cfg.id);
  if(cfg.basis!=='gross')throw Error('Solo se admiten tablas de capacidad bruta; convertir/cotejar antes de importar.');
- if(!['exact','bracket-min'].includes(cfg.radiusPolicy))throw Error('Política de radio no válida.');
+ if(!['exact','bracket-min','next-larger'].includes(cfg.radiusPolicy))throw Error('Política de radio no válida.');
+ if(!['exact','bracket-min','next-larger'].includes(cfg.boomPolicy||'exact'))throw Error('Política de pluma no válida.');
+ if((cfg.radiusPolicy==='next-larger'||(cfg.boomPolicy&&cfg.boomPolicy!=='exact'))&&!cfg.intermediateSource)throw Error('Indicá la nota/página del manual que habilita los valores intermedios.');
  if(!cfg.outriggers||!cfg.sector||!cfg.extension)throw Error('Indicar estabilizadores, sector y patrón de extensión.');
  number(cfg.counterweightKg,'contrapeso');number(cfg.maxAngle,'ángulo máximo',1,90);
  if(!Array.isArray(cfg.booms)||!cfg.booms.length||!Array.isArray(cfg.rows)||!cfg.rows.length)throw Error('Tabla vacía.');
@@ -21,17 +23,27 @@ export function validateCrane(c){
  let r=-1;for(const row of cfg.rows){if(!Array.isArray(row)||row.length!==cfg.booms.length+1)throw Error('Cada fila debe tener radio y una celda por pluma.');number(row[0],'radio',0.01);if(row[0]<=r)throw Error('Radios deben ser únicos y crecientes.');r=row[0];for(const v of row.slice(1)){if(v!==null)number(v,'capacidad',0.001,c.nominalKg);}}
  }return c;
 }
+export function tableAxis(values,value,name,policy='exact'){
+ const v=number(value,name,.01),exact=values.findIndex(x=>Math.abs(x-v)<1e-8);
+ if(exact>=0)return {bounds:[exact],used:[exact],derived:false};
+ const hi=values.findIndex(x=>x>v);
+ if(hi<=0)throw Error(`${name}: fuera del rango tabulado (${values[0]} a ${values.at(-1)} m). No se extrapola capacidad fuera de tabla.`);
+ if(policy==='exact')throw Error(`${name}: el manual cargado no habilita medidas intermedias. Elegí un valor exacto de la tabla o cargá el criterio del manual de la unidad.`);
+ if(!['next-larger','bracket-min'].includes(policy))throw Error('Criterio de tabla no reconocido.');
+ return {bounds:[hi-1,hi],used:policy==='next-larger'?[hi]:[hi-1,hi],derived:true};
+}
 export function lookup(cfg,radius,boom){
- const r=number(radius,'radio',0.01),L=number(boom,'pluma',0.1),j=cfg.booms.findIndex(v=>Math.abs(v-L)<1e-8);
- if(j<0)throw Error('Elegir una longitud de pluma exacta de la tabla. No se interpolan plumas.');
- const exact=cfg.rows.find(row=>Math.abs(row[0]-r)<1e-8);
- if(exact){if(exact[j+1]===null)throw Error('Celda vacía: configuración fuera de tabla.');return {capacity:exact[j+1],usedRadii:[exact[0]],boom:L,method:'Celda exacta'};}
- if(cfg.radiusPolicy==='exact')throw Error('Este modelo exige radio tabulado. Seleccioná un radio de la tabla o importá una política respaldada por su manual.');
- const hi=cfg.rows.findIndex(row=>row[0]>r);
- if(hi<=0)throw Error('Radio fuera del rango tabulado. No se extrapola.');
- const a=cfg.rows[hi-1],b=cfg.rows[hi];
- if(a[j+1]===null||b[j+1]===null)throw Error('Radio entre celdas no válidas. No se cruza una celda vacía.');
- return {capacity:Math.min(a[j+1],b[j+1]),usedRadii:[a[0],b[0]],boom:L,method:'Mínimo de radios contiguos (sin interpolación)'};
+ const r=number(radius,'radio',.01),L=number(boom,'pluma',.1);
+ const ra=tableAxis(cfg.rows.map(row=>row[0]),r,'radio',cfg.radiusPolicy),ba=tableAxis(cfg.booms,L,'pluma',cfg.boomPolicy||'exact');
+ if((ra.derived&&cfg.radiusPolicy==='next-larger'||ba.derived&&(cfg.boomPolicy||'exact')!=='exact')&&!cfg.intermediateSource)throw Error('Falta la nota del manual para resolver estas medidas intermedias.');
+ // Ambos límites deben ser válidos: una celda vacía no define un dominio de capacidad.
+ const bounds=ra.bounds.flatMap(i=>ba.bounds.map(j=>({radius:cfg.rows[i][0],boom:cfg.booms[j],capacity:cfg.rows[i][j+1]})));
+ if(bounds.some(c=>c.capacity===null))throw Error('Celda vacía: no se puede resolver entre celdas no válidas ni extender el alcance de esta configuración.');
+ const cells=ra.used.flatMap(i=>ba.used.map(j=>({radius:cfg.rows[i][0],boom:cfg.booms[j],capacity:cfg.rows[i][j+1]})));
+ const derived=ra.derived||ba.derived,hasMin=(ra.derived&&cfg.radiusPolicy==='bracket-min')||(ba.derived&&cfg.boomPolicy==='bracket-min');
+ return {capacity:Math.min(...cells.map(c=>c.capacity)),usedRadii:ra.used.map(i=>cfg.rows[i][0]),usedBooms:ba.used.map(j=>cfg.booms[j]),boom:L,derived,cells,bounds,
+  policySource:derived?cfg.intermediateSource||'Criterio conservador de radios ingresado con la tabla.':'',
+  method:!derived?'Celda exacta':hasMin?'Mínimo de celdas contiguas válidas (criterio conservador del manual)':'Siguiente radio/pluma mayor según manual (sin interpolación lineal)'};
 }
 export function grossMass(p){return number(p.loadKg,'peso de carga',0.001)+number(p.hookKg,'gancho')+number(p.rigKg,'aparejos')+number(p.otherKg,'otros suspendidos');}
 export function craneCheck(cfg,p){

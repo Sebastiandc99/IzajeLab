@@ -1,10 +1,11 @@
-import {number,grossMass,craneCheck,geometry} from './engine.js';
+import {number,grossMass,craneCheck,geometry,tableAxis} from './engine.js';
 const present=v=>v!==''&&v!==null&&v!==undefined;
 export function solveAutomatic(cfg,p,known){
  grossMass(p);number(p.limit,'límite',1,75);number(p.deductionKg,'deducciones');number(p.headroom,'reserva de gancho',.01);
  const hasR=present(known.radius),hasL=present(known.boom),hasH=present(known.hookHeight);
  const R=hasR?number(known.radius,'radio',.01):null,L=hasL?number(known.boom,'pluma',.1):null,H=hasH?number(known.hookHeight,'altura del gancho',.01):null;
- if(hasL&&!cfg.booms.some(b=>Math.abs(b-L)<1e-8))throw Error('La pluma debe ser una longitud de la tabla. Usá una de las sugerencias del campo.');
+ if(hasL)tableAxis(cfg.booms,L,'pluma',cfg.boomPolicy||'exact');
+ if(hasR)tableAxis(cfg.rows.map(row=>row[0]),R,'radio',cfg.radiusPolicy);
  const minR=present(p.minRadius)?number(p.minRadius,'radio mínimo',.01):cfg.rows[0][0];
  const radii=hasR?[R]:cfg.rows.map(row=>row[0]).filter(r=>r>=minR),booms=hasL?[L]:cfg.booms;
  const options=[];let firstError;
