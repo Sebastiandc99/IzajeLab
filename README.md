@@ -1,4 +1,4 @@
-# IzajeLab · v4.0.1
+# IzajeLab · v4.0.2
 
 Herramienta en español para planificar izajes con tablas de grúas y análisis de eslingas. Aplicación estática sin dependencias, preparada para GitHub Pages y uso móvil.
 
@@ -131,7 +131,7 @@ La estimación **no es capacidad autorizada**: no calcula una utilización admis
 
 Se mantienen los huecos internos y modos de extensión separados. Con un eje exacto se usa el tramo publicado de esa fila/columna; fuera de él solo se prolongan sus dos celdas contiguas del borde. No se estima con valores faltantes, un único punto sin pendiente o un resultado no positivo. Una proyección matemática no demuestra alcance físico ni estabilidad.
 
-## Mosaico y dos posiciones · v4.0.1
+## Mosaico y dos posiciones · v4.0.2
 
 La pantalla principal tiene cuatro bloques: carga, grúa, lingado/ángulo y posiciones. Se conservan catálogo, tablas propias, importación/exportación, sensor de teléfono y dimensiones desplegables.
 
