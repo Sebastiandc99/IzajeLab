@@ -1,4 +1,4 @@
-const CACHE='izajelab-v4.0.3';
+const CACHE='izajelab-v4.0.4';
 const ASSETS=['./','./index.html','./styles.css','./app.js','./engine.js','./field.js','./planning.js','./positions.js','./estimation.js','./rigging.js','./data.js','./icon.svg','./manifest.webmanifest'];
 self.addEventListener('message',e=>{if(e.data?.type==='ACTIVATE_UPDATE')self.skipWaiting();});
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS.map(url=>new Request(url,{cache:'reload'})))).then(()=>self.skipWaiting()));});
