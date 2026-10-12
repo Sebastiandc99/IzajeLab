@@ -16,3 +16,10 @@
 .cargo-dimensions>summary span{margin-left:auto;font-size:11px;font-weight:400}
 .cargo-dimensions .grid3{padding:8px 0 0}
 @media(max-width:800px){#crane>.workspace>.inputs{display:flex}#crane .sketch{padding:14px}#craneDiagram{min-height:320px;max-height:none}.cargo-dimensions .grid3{grid-template-columns:1fr}.cargo-dimensions label{margin-bottom:5px}}
+
+.angle-card{margin-bottom:20px}
+.angle-entry-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+.angle-entry-grid h3{font-size:14px;margin:0 0 14px;color:#416940}
+.angle-entry-grid .sensor-launch{font-size:16px;min-height:55px;margin-bottom:0}
+.angle-entry-grid .angle-slider-label{margin-top:18px}
+@media(max-width:800px){.angle-entry-grid{display:flex;flex-direction:column;gap:18px}.angle-entry-grid>div:last-child{order:-1}.angle-entry-grid .sensor-launch{min-height:58px}.angle-entry-grid .angle-slider-label{display:none}}

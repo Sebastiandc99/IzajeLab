@@ -16,6 +16,10 @@ Herramienta en español para planificar izajes con tablas de grúas y análisis 
 - El dibujo grande reproduce el amarre elegido. El deslizador cambia el ángulo y abre/cierra los ramales. La capacidad de las eslingas se verifica por separado usando el WLL ingresado.
 - Dos estrangulados: factor 0,8 aplicado al factor de 2 ramales de la tabla SpanSet. Cesta paralela requiere balancín: su peso debe estar incluido entre los aparejos.
 
+## Acceso al ángulo (v3.1.3)
+
+Ángulo del eslingado aparece al inicio de Lingado y ángulo, siempre visible incluso sin amarre elegido. Admite ingreso manual o medidor del teléfono. En móvil el acceso al sensor aparece primero. Medir antes de elegir un lingado conserva el ángulo y no abre el aviso de amarre al aplicar la medición. En vertical/estrangulado/cesta paralela se aclara que el ángulo medido no modifica la capacidad de esa configuración.
+
 ## Funciones heredadas
 
 - Peso obligatorio único para todos los cálculos, sin valor de carga de ejemplo precargado.
