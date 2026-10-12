@@ -44,3 +44,18 @@ header{max-width:1200px;padding:18px 22px}main{max-width:1200px;padding:18px 22p
 
 #results #craneDiagram,#results #craneDiagram2{min-height:380px;max-height:none}
 @media(max-width:700px){#results #craneDiagram,#results #craneDiagram2{min-height:300px}}
+
+/* Rojo por ítem: conserva el texto del criterio y se borra al editar/recalcular. */
+:root{--fail-bg:#ffe1e5;--fail-ink:#8f1422;--fail-border:#c93546}
+.verification-failed,.position-result.failed,.position-result.estimated,.plan-overview.blocked{background:var(--fail-bg);border-color:var(--fail-border);color:var(--fail-ink)}
+.mosaic-tile.verification-failed,.mosaic-tile.verification-failed:hover{background:var(--fail-bg);border:2px solid var(--fail-border);padding:19px 16px}
+.mosaic-tile.verification-failed .tile-label,.mosaic-tile.verification-failed small,.mosaic-tile.verification-failed .tile-position{color:var(--fail-ink)}
+.tile-position.verification-failed{padding:5px 7px;border-radius:6px;font-weight:700}
+.position-summary.verification-failed,.drawing-metrics.verification-failed{background:#ffd0d7;color:var(--fail-ink);border:1px solid var(--fail-border)}
+#slingResultCard.verification-failed{background:var(--fail-bg);color:var(--fail-ink);border:2px solid var(--fail-border)}
+#slingResultCard.verification-failed .status-pill.bad,#slingResultCard.verification-failed .big-number.bad,#slingResultCard.verification-failed .error{color:var(--fail-ink)}
+#slingResultCard.verification-failed details,#slingResultCard.verification-failed summary{color:var(--fail-ink)}
+.sling-status.blocked,#craneResult>p.error{background:var(--fail-bg);border:1px solid var(--fail-border);color:var(--fail-ink)}
+.overview-checks>span{padding:8px 10px;border-radius:8px}.overview-checks .check-failed{background:#ffd0d7;color:var(--fail-ink);border:1px solid var(--fail-border)}.overview-checks .check-passed{background:#e7f2de;color:#275b34;border:1px solid #b5d09c}
+.crane-angle-reference{margin:0 0 20px;max-width:780px;padding:18px}.crane-angle-reference h2{font-size:19px;margin-bottom:7px}.crane-angle-reference figcaption p{font-size:14px;margin:0}.crane-angle-reference svg{display:block;width:100%;max-width:640px;height:auto;margin:12px auto 0}.crane-angle-reference>.hint{margin:0;font-size:12px}
+@media(max-width:700px){.mosaic-tile.verification-failed,.mosaic-tile.verification-failed:hover{padding:15px 12px}.crane-angle-reference{padding:14px}.crane-angle-reference h2{font-size:17px}}
