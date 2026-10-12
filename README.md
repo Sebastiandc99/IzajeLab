@@ -1,4 +1,4 @@
-# IzajeLab · v3.2
+# IzajeLab · v3.3
 
 Herramienta en español para planificar izajes con tablas de grúas y análisis de eslingas. Aplicación estática sin dependencias, preparada para GitHub Pages y uso móvil.
 
@@ -77,7 +77,7 @@ Consultas de fuentes: 11/10/2026. Los datos precargados son referencias de folle
 
 Utilización = (carga + gancho + aparejos + otros suspendidos) / (tabla bruta − deducciones) × 100. El criterio 75% se aplica a capacidad publicada; no vuelve a aplicar el criterio de vuelco SAE 85%.
 
-Las columnas y filas almacenan valores exactos. SANY STC250/300/500: para R o L intermedios se usan el siguiente radio y largo mayores de la configuración seleccionada (folletos p.12, nota 6). Grove RT540E: mínimo de celdas contiguas válidas para R y/o L intermedios (p.14, nota 3), como criterio conservador. SANY STC800 y Tadano GT-600EX mantienen radios/plumas exactos porque los documentos precargados no definen una regla cotejada. No se aplica interpolación lineal ni se extrapola fuera del rango; todas las celdas de los límites del intervalo deben existir. Las búsquedas devuelven máximos dentro de los radios tabulados, no un máximo continuo ni una ubicación aprobada.
+Las columnas y filas almacenan valores exactos. SANY STC250/300/500: para R o L intermedios se usan el siguiente radio y largo mayores de la configuración seleccionada (folletos p.12, nota 6). Grove RT540E: mínimo de celdas contiguas válidas para R y/o L intermedios (p.14, nota 3), como criterio conservador. SANY STC800 y Tadano GT-600EX mantienen radios/plumas exactos porque los documentos precargados no definen una regla cotejada. La verificación no aplica interpolación lineal ni extrapolación fuera del rango; todas las celdas de los límites del intervalo deben existir. Las búsquedas devuelven máximos dentro de los radios tabulados, no un máximo continuo ni una ubicación aprobada.
 
 Geometría rígida aproximada: R = offset + L cos(ángulo); altura punta = altura pivote + L sin(ángulo). La punta requerida incluye altura del gancho H + reserva de cabezal. H se mide desde el suelo y ya contempla el aparejo sobre la carga. Pivote, offset y reserva iniciales son datos ilustrativos ingresados por usuario. Se necesita el diagrama de alcance real para considerar flexión, cabezal, obstáculos y giro.
 
@@ -122,3 +122,11 @@ La tabla JSON exportada incluye booms, rows, fuente, política de radio y config
 ## Actualizaciones
 
 Cada cambio de archivos de producción requiere aumentar el nombre CACHE en `sw.js`. Las pestañas abiertas pueden conservar el worker anterior hasta cerrarlas/reabrirlas. Datos de tablas propias se conservan en el navegador salvo eliminación manual.
+
+## Estimaciones matemáticas · v3.3
+
+Al ingresar radio y pluma explícitos, si no se puede verificar la grúa con la tabla, se ofrece una estimación de referencia: lineal con dos celdas contiguas o bilineal con cuatro. Fuera del tramo se extrapola; dentro se etiqueta como interpolación. Un cartel compacto muestra el valor estimado y el tabulado más cercano con sus coordenadas. Ver datos usados muestra todas las celdas y la fuente.
+
+La estimación **no es capacidad autorizada**: no calcula una utilización admisible, no aprueba el límite del 75%, no propone medidas ni rellena campos. Se exporta como `referenceEstimate` con `verificationEligible:false`, separado de `resultCrane:null`. La impresión de un cálculo de grúa exige resultado verificable. La falla del lingado bloquea también esta estimación.
+
+Se mantienen los huecos internos y modos de extensión separados. Con un eje exacto se usa el tramo publicado de esa fila/columna; fuera de él solo se prolongan sus dos celdas contiguas del borde. No se estima con valores faltantes, un único punto sin pendiente o un resultado no positivo. Una proyección matemática no demuestra alcance físico ni estabilidad.

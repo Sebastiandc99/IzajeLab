@@ -21,4 +21,8 @@ SANY STC250/STC300/STC500: p.12 nota 6 manda usar el siguiente radio/pluma mayor
 
 SANY STC800 de 50 m y Tadano GT-600EX EX-04: los documentos precargados no establecen una regla cotejada para R/L intermedios; continúan exigiendo valores exactos. No se infiere una política del fabricante desde otra variante/modelo.
 
-No se usa promedio lineal, interpolación bilineal ni prolongación de la curva fuera del dominio. El resultado informa coordenadas ingresadas, valores fuente usados, capacidad, criterio y nota de origen.
+Para verificar el izaje no se usa promedio lineal, interpolación bilineal ni prolongación de la curva fuera del dominio. El resultado informa coordenadas ingresadas, valores fuente usados, capacidad, criterio y nota de origen.
+
+## Referencia matemática · v3.3
+
+`estimation.js` calcula una proyección separada de la verificación. El fabricante no autoriza este algoritmo como capacidad de operación. El resultado lleva `verificationEligible:false`; muestra celdas usadas y la celda tabulada más cercana. El motor de verificación y el buscador de medidas nunca llaman este módulo.

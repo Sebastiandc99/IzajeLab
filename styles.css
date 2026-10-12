@@ -25,3 +25,5 @@
 @media(max-width:800px){.angle-entry-grid{display:flex;flex-direction:column;gap:18px}.angle-entry-grid>div:last-child{order:-1}.angle-entry-grid .sensor-launch{min-height:58px}.angle-entry-grid .angle-slider-label{display:none}}
 
 .sling-status{padding:12px 14px;border:1px solid #d7e2cd;border-radius:8px;background:#f3f7ec;font-size:13px;margin:12px 0;color:#4b6844}.sling-status.ok{background:#eef7df;border-color:#b7d694;color:#315c32}.sling-status.blocked{background:#fff0e9;border-color:#d99883;color:#913f29}.chart-derived{padding:10px;border:1px solid #638557;border-radius:7px;color:#deedca}
+
+.estimate-notice{padding:12px 14px;border:1px solid #dfb873;border-radius:8px;background:#fff2d5;color:#543f1c;font-size:13px;line-height:1.6}.estimate-notice span{font-size:12px}.estimate-notice strong{color:#453110}

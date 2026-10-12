@@ -27,7 +27,7 @@ export function tableAxis(values,value,name,policy='exact'){
  const v=number(value,name,.01),exact=values.findIndex(x=>Math.abs(x-v)<1e-8);
  if(exact>=0)return {bounds:[exact],used:[exact],derived:false};
  const hi=values.findIndex(x=>x>v);
- if(hi<=0)throw Error(`${name}: fuera del rango tabulado (${values[0]} a ${values.at(-1)} m). No se extrapola capacidad fuera de tabla.`);
+ if(hi<=0)throw Error(`${name}: fuera del rango tabulado (${values[0]} a ${values.at(-1)} m). No hay capacidad verificable fuera de tabla.`);
  if(policy==='exact')throw Error(`${name}: el manual cargado no habilita medidas intermedias. Elegí un valor exacto de la tabla o cargá el criterio del manual de la unidad.`);
  if(!['next-larger','bracket-min'].includes(policy))throw Error('Criterio de tabla no reconocido.');
  return {bounds:[hi-1,hi],used:policy==='next-larger'?[hi]:[hi-1,hi],derived:true};
