@@ -1,4 +1,4 @@
-# IzajeLab · v4.0.4
+# IzajeLab · v4.1.0
 
 Herramienta en español para planificar izajes con tablas de grúas y análisis de eslingas. Aplicación estática sin dependencias, preparada para GitHub Pages y uso móvil.
 
@@ -131,7 +131,7 @@ La estimación **no es capacidad autorizada**: no calcula una utilización admis
 
 Se mantienen los huecos internos y modos de extensión separados. Con un eje exacto se usa el tramo publicado de esa fila/columna; fuera de él solo se prolongan sus dos celdas contiguas del borde. No se estima con valores faltantes, un único punto sin pendiente o un resultado no positivo. Una proyección matemática no demuestra alcance físico ni estabilidad.
 
-## Mosaico y dos posiciones · v4.0.4
+## Mosaico y dos posiciones · v4.1.0
 
 La pantalla principal tiene cuatro bloques: carga, grúa, lingado/ángulo y posiciones. Se conservan catálogo, tablas propias, importación/exportación, sensor de teléfono y dimensiones desplegables.
 
@@ -144,3 +144,9 @@ Geometría rígida aproximada: R = offset de pivote + L × cos(θ). Con R y θ s
 Los campos vacíos de cada posición son propuestas independientes, marcadas como tales. No se copia la posición inicial como dato confirmado de la final. Dos extremos verificados no verifican el recorrido completo: radios y sectores intermedios, deformaciones, condiciones de obra y manual de unidad siguen siendo necesarios.
 
 Formato de análisis `izajelab-plan-v4`: incluye ambos grupos de datos, resultados de posiciones, evaluación conjunta y flags de datos propuestos. Se siguen abriendo v1/v2/v3; la posición final ausente se vuelve a proponer desde la tabla y requiere cotejo. El PDF incluye ambas posiciones y croquis, θ de grúa, β de eslingas, capacidades en tn, fuentes y resultado conjunto.
+
+## Datos mínimos por posición (v4.1)
+
+Cada posición requiere al menos un valor ingresado de radio R, pluma L o ángulo θ. La altura H sola no define una posición. Si falta ese dato, la app muestra cuál posición hay que completar, la resalta en rojo y lleva al formulario, sin completar ni aprobar ese extremo. La otra posición puede conservar su resultado.
+
+Con radio conocido se propone la menor pluma que cumple la tabla y se obtiene θ por geometría aproximada; radio solo no significa que exista un único ángulo posible. Con R/L conocidos no se exige θ manual. Los campos propuestos se identifican y se recalculan al cambiar los datos. H es opcional: si se ingresa limita la búsqueda; si se omite se informa altura disponible aproximada.

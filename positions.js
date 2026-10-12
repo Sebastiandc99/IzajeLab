@@ -21,6 +21,7 @@ export function resolvePosition(known,p){
 }
 
 export function solvePosition(cfg,p,known){
+ if(!['radius','boom','angle'].some(key=>has(known[key]))){const e=Error((has(known.hookHeight)?'La altura sola no define esta posición. ':'')+'Falta completar: ingresá radio R, pluma L o ángulo θ (al menos uno).');e.code='MISSING_POSITION_DATA';throw e;}
  const resolved=resolvePosition(known,p);let solved;
  if(resolved.angle!==null&&resolved.radius===''&&resolved.boom===''){
   const options=[];let reason;
