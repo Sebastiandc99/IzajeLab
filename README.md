@@ -1,4 +1,4 @@
-# IzajeLab · v3
+# IzajeLab · v3.1
 
 Herramienta en español para planificar izajes con tablas de grúas y análisis de eslingas. Aplicación estática sin dependencias, preparada para GitHub Pages y uso móvil.
 
@@ -21,7 +21,8 @@ Herramienta en español para planificar izajes con tablas de grúas y análisis 
 - Peso obligatorio único para todos los cálculos, sin valor de carga de ejemplo precargado.
 - Búsqueda automática de los datos de radio, pluma y altura que no se ingresan.
 - Radio/pluma en croquis proporcional a la misma escala, actualizado mientras se escriben los datos.
-- Sin largo/ancho de carga: H es suelo a gancho. Los pesos de gancho/aparejos y ajustes se despliegan solo cuando se necesitan.
+- Botón desplegable Dimensiones de la carga: largo (en el plano), ancho (profundidad) y alto opcionales, en metros. Se conservan en JSON y en el informe. Largo/alto se dibujan con la escala de radio/pluma; ancho se indica como profundidad. El lingado permanece esquemático y no determina los anclajes. H sigue siendo suelo a gancho. Estas dimensiones no alteran peso, capacidad ni búsqueda de tabla.
+- Croquis de izaje a todo el ancho con mayor tamaño y extensión del dibujo para no recortar cargas grandes.
 - Inclinómetro: borde largo del teléfono paralelo al ramal, lectura estable de β desde vertical y θ desde horizontal, toma de ángulo y calibración horizontal.
 - Sensores solo tras pulsar Iniciar y permitir acceso si el navegador lo pide. HTTPS requerido. Sin hardware o sin lecturas válidas, no muestra cero ni permite tomar una medida.
 
@@ -40,6 +41,15 @@ El inclinómetro usa aceleración con gravedad del eje Y físico del teléfono y
 - Importar tablas CSV/TSV o JSON de cualquier marca/configuración; conservar fuente y revisión.
 - Exportar/reabrir análisis y tablas. Informe imprimible (Guardar como PDF).
 - Guardado local de tablas; cálculo offline después de la primera carga completa del sitio.
+
+## Modelos agregados en v3.1
+
+- SANY STC300, 30 t, pluma 33,5 m.
+- SANY STC500, 50 t, pluma 43 m: modos de extensión I y II separados.
+- SANY STC800, 80 t: exclusivamente variante de pluma 50 m y contrapeso 15,65 t.
+- Tadano GT-600EX, 60 t / 43 m, modelo publicado por Tecmaco. Ficha de referencia EX-04 (2010), TC-4255-2; no equivale automáticamente a una unidad Tecmaco. Modos I y II, estabilizadores 6,8 m; quinta pata para 360°.
+
+Fuentes enlazadas en `data.js` y controles de transcripción en `docs/chart-audit.md`. No se mezclan variantes con plumas/contrapesos diferentes.
 
 ## Datos iniciales y alcance
 

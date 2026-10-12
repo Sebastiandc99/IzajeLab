@@ -3,3 +3,16 @@
 @media print{body{background:white}header,main>*{display:none!important}main,#printReport{display:block!important}#printReport[hidden]{display:block!important}main{padding:0}.print-report{display:block!important}th{position:static}button{display:none!important}#sensor{display:none!important}@page{margin:17mm}}
 .auto-tag{font-size:10px;color:#406a37;background:#ecf5de;border-radius:5px;padding:4px 7px;font-weight:500}.auto-filled{border-color:#84aa5d;background:#f0f7e5}.rigging-picker{margin-bottom:20px}.rigging-choices{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}.rigging-choice{position:relative;padding:12px 10px;border:2px solid #dce5d4;border-radius:12px;text-align:left;background:#fafcf7;display:flex;flex-direction:column;align-items:stretch}.rigging-choice svg{width:100%;height:132px}.rigging-choice strong{display:block;font-size:14px;margin-top:7px}.rigging-choice small{font-size:11px;color:#6c8068;margin-top:3px}.rigging-choice[aria-checked="true"]{border-color:#386d40;background:#ecf6dd;box-shadow:0 0 0 2px #d5e9b7}.rigging-choice[aria-checked="true"]::after{content:'✓';position:absolute;top:9px;right:10px;background:#326342;color:white;width:23px;height:23px;border-radius:50%;display:grid;place-items:center;font-size:13px}.rigging-choice:hover{border-color:#8eac72}.rigging-workspace{grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr)}.selected-rig-name{font-size:15px;font-weight:700;color:#4c7241;padding:10px;background:#eff6e4;border-radius:8px}.angle-slider-label{padding:12px;background:#f2f7ea;border-radius:8px}input[type="range"]{padding:0;border:0;min-height:28px;accent-color:#426b3d}.prompt-dialog{max-width:420px}.prompt-dialog h2{font-size:23px}.rigging-choice:focus-visible{outline:3px solid #7daa46}.rigging-workspace .sketch>svg{min-height:350px}
 @media(max-width:800px){.rigging-choices{grid-template-columns:repeat(2,1fr);gap:9px}.rigging-choice{padding:10px 8px}.rigging-choice svg{height:115px}.rigging-choice strong{font-size:12px}.rigging-choice small{font-size:10px}.rigging-workspace{grid-template-columns:1fr}.rigging-workspace .visual-results{grid-row:1}.rigging-workspace .sketch>svg{min-height:240px}.rigging-picker{padding:16px}.prompt-dialog h2{font-size:20px}}
+
+/* Croquis de izaje a todo el ancho; dimensiones opcionales. */
+#crane>.workspace{grid-template-columns:1fr}
+#crane>.workspace>.inputs{display:grid;grid-template-columns:minmax(280px,.7fr) minmax(0,1.3fr);align-items:start}
+#crane .sketch{padding:22px}
+#craneDiagram{width:100%;min-height:440px;max-height:740px}
+.cargo-dimensions{margin:12px 0 18px;border-top:0;padding:0}
+.cargo-dimensions>summary{display:flex;align-items:center;gap:10px;min-height:48px;background:#edf4e5;border:1px solid #cdddbc;border-radius:9px;padding:12px 14px;color:#345b35;font-size:14px}
+.cargo-dimensions>summary::before{content:'＋';font-size:20px;line-height:1}
+.cargo-dimensions[open]>summary::before{content:'−'}
+.cargo-dimensions>summary span{margin-left:auto;font-size:11px;font-weight:400}
+.cargo-dimensions .grid3{padding:8px 0 0}
+@media(max-width:800px){#crane>.workspace>.inputs{display:flex}#crane .sketch{padding:14px}#craneDiagram{min-height:320px;max-height:none}.cargo-dimensions .grid3{grid-template-columns:1fr}.cargo-dimensions label{margin-bottom:5px}}
