@@ -25,3 +25,9 @@ SRC1300T pp.19–22: masa75,8tn, CW23tn, estabilizadores8,25×8,2m, ángulo -2°
 SCC p.10: ángulo principal30°–85°, contrapeso trasero180tn y carbody50tn en H/HJ. P.6 gancho450tn10,9tn. P.5 más de225tn requiere doble cabrestante. H78/84m y HJ largos exigen cables de suspensión y montaje conforme pp.35/44. No se infiere masa operativa de la capacidad nominal. No se incorporan FJ, LJ ni superlift porque requieren geometría y condiciones que este motor no representa.
 
 El código valida las 2267 celdas convertidas contra el registro de columnas, unicidad de fuente/patrón, puntos de control y límites. Los cálculos se mantienen preliminares y deben cotejarse con el manual operativo de la unidad.
+
+## Acceso a longitudes · v4.2.2
+
+Se detectó un filtro de interfaz que ofrecía sólo las longitudes del grupo de extensión activo. Afectaba SRC900C (47 m ausente con TELE1 0%) y SRC1300T (longitudes largas en otros grupos de T2/T3/T4). Se reúnen las longitudes dentro del mismo montaje físico, conservando columnas y capacidades independientes. Las 141 columnas incluidas son accesibles; las 2267 capacidades no cambiaron. SCC4500A mantiene H y HJ separados.
+
+Cotejo adicional visual: SRC900C, PDF6 derecha / impresa11, R22/L47 = 5,30 tn; TELE1–4 100%, modo I/II, 3 ramales de cable. Pruebas de interfaz: 22/47 devuelve 5300 kg y respeta el 75%, exige elección entre patrones ambiguos, conserva apoyos y rechaza celdas vacías.
