@@ -1,4 +1,4 @@
-# IzajeLab · v4.2.0
+# IzajeLab · v4.2.1
 
 Aplicación estática en español para calcular utilización de grúa y verificar lingado en dos posiciones. GitHub Pages: https://sebastiandc99.github.io/IzajeLab/.
 
@@ -38,3 +38,5 @@ Geometría rígida aproximada, sin flexión: `R = offset + L × cos(θ)`. H omit
 Sin dependencias para el sitio. `npm run check` y `npm test`. `python build_portable.py` genera la copia portable. Las tablas de `tests/fixtures` son casos exclusivos de regresión numérica, sin modelos operativos, y no se publican en Pages ni en la copia portable. Las pruebas de catálogo y los flujos con catálogo real verifican las tres tablas del proyecto.
 
 El service worker conserva una copia offline y cambia de caché por versión. Un archivo abierto como `file:` no registra service worker.
+
+La SCC4500A conserva una única longitud de pluma de celosía para ambos extremos: si las búsquedas independientes difieren, se busca la menor longitud común compatible. Longitudes manuales distintas o ausencia de solución común bloquean APTO con una razón explícita.

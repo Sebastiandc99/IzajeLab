@@ -57,3 +57,13 @@ export function assessLift(positions,slingResult){
  const limiting=numeric.length?numeric.reduce((a,b)=>b.result.percent>a.result.percent?b:a):null;
  return {status,pass:cranePass&&slingPass,cranePass,slingPass,verified,limitingPosition:limiting?.index??null};
 }
+
+// Pluma de celosía: no se cambia el montaje de insertos con carga suspendida.
+export function solveFixedBoomPositions(cfg,p,knowns){
+ if(knowns.length!==2)throw Error('Se requieren las dos posiciones.');
+ for(const boom of cfg.booms){
+  if(knowns.some(k=>has(k.boom)&&Math.abs(Number(k.boom)-boom)>1e-8))continue;
+  try{const solved=knowns.map(k=>{const r=solvePosition(cfg,p,{...k,boom});return {...r,auto:{...r.auto,boom:!has(k.boom)}};});if(solved.every(s=>s.chosen.pass))return solved;}catch{}
+ }
+ const e=Error('La pluma de celosía debe tener la misma longitud en ambas posiciones. No hay una longitud común que cumpla estos datos; revisá radio, altura y montaje de pluma.');e.code='FIXED_BOOM_CONFLICT';throw e;
+}
