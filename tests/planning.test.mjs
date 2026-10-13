@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {CRANES} from '../data.js';import {solveAutomatic} from '../planning.js';import {riggingSVG,RIGGING_CHOICES} from '../rigging.js';import {slingCheck} from '../engine.js';
+import {CRANES} from './fixtures/mathematical-charts.js';import {solveAutomatic} from '../planning.js';import {riggingSVG,RIGGING_CHOICES} from '../rigging.js';import {slingCheck} from '../engine.js';
 const cfg=CRANES[0].configs[0],p={loadKg:5000,hookKg:320,rigKg:100,otherKg:0,deductionKg:0,limit:75,minRadius:'',pivotHeight:2.5,pivotOffset:0,headroom:1.5};
 test('solo peso: mayor radio tabulado y menor pluma compatible',()=>{const s=solveAutomatic(cfg,p,{radius:'',boom:'',hookHeight:''});assert.equal(s.chosen.radius,10);assert.equal(s.chosen.boom,14.5);assert.equal(s.chosen.hookHeight,11.5);assert.deepEqual(s.auto,{radius:true,boom:true,hookHeight:true});assert.ok(s.chosen.pass);});
 test('radio ingresado se conserva y se busca menor pluma',()=>{const s=solveAutomatic(cfg,p,{radius:8,boom:'',hookHeight:''});assert.equal(s.chosen.radius,8);assert.equal(s.chosen.boom,10.65);assert.equal(s.auto.radius,false);});

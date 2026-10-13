@@ -1,5 +1,6 @@
 import {number,geometry,rad} from './engine.js';
 import {solveAutomatic} from './planning.js';
+const minimumAngle=(cfg,r)=>Math.max(cfg.minAngle||0,...r.usedBooms.map(L=>cfg.minAngles?.[cfg.booms.indexOf(L)]||0));
 const has=v=>v!==''&&v!==null&&v!==undefined;
 
 // Geometría rígida aproximada. θ se mide desde la horizontal; no es β del lingado.
@@ -29,7 +30,7 @@ export function solvePosition(cfg,p,known){
    const radius=number(Number(p.pivotOffset)+boom*Math.cos(rad(resolved.angle)),'radio obtenido desde ángulo',.01);
    if(has(p.minRadius)&&radius<number(p.minRadius,'radio mínimo',.01))continue;
    const trial=solveAutomatic(cfg,p,{radius,boom,hookHeight:known.hookHeight});
-   options.push(...trial.options.filter(r=>r.pass&&r.geometry&&r.geometry.angle<=cfg.maxAngle+1e-8));
+   options.push(...trial.options.filter(r=>r.pass&&r.geometry&&r.geometry.angle<=cfg.maxAngle+1e-8&&r.geometry.angle>=minimumAngle(cfg,r)-1e-8));
   }catch(e){reason??=e;}}
   if(!options.length)throw Error(`No hay combinación verificable con ese ángulo de pluma.${reason?' '+reason.message:''}`);
   options.sort((a,b)=>b.radius-a.radius||a.boom-b.boom);
@@ -37,7 +38,7 @@ export function solvePosition(cfg,p,known){
  }else solved=solveAutomatic(cfg,p,{radius:resolved.radius,boom:resolved.boom,hookHeight:known.hookHeight});
  const fixed=resolved.radius!==''&&resolved.boom!=='';
  const updated=solved.options.map(r=>{
-  const geometryPass=!!r.geometry&&r.geometry.angle<=cfg.maxAngle+1e-8&&(!r.hasRequiredHeight||r.geometry.reach);
+  const geometryPass=!!r.geometry&&r.geometry.angle<=cfg.maxAngle+1e-8&&r.geometry.angle>=minimumAngle(cfg,r)-1e-8&&(!r.hasRequiredHeight||r.geometry.reach);
   return {...r,geometryPass,angle:resolved.angle??r.geometry?.angle??null,angleApproximate:resolved.angle===null,pass:r.pass&&geometryPass};
  });
  const options=fixed?updated:updated.filter(r=>r.pass);

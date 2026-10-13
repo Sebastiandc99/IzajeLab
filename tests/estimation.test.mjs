@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {estimateCapacity} from '../estimation.js';
 import {lookup,craneCheck} from '../engine.js';
 import {solveAutomatic} from '../planning.js';
-import {CRANES} from '../data.js';
+import {CRANES} from './fixtures/mathematical-charts.js';
 const sany=CRANES[0].configs[0];
 const p={loadKg:100,hookKg:320,rigKg:100,otherKg:0,deductionKg:0,limit:75,minRadius:'',pivotHeight:2.5,pivotOffset:0,headroom:1.5};
 test('radio fuera de tabla: proyección 900 kg desde 1300/1100, referencia más cercana 1100',()=>{

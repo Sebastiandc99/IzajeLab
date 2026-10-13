@@ -16,9 +16,10 @@ export function validateCrane(c){
  if(!['exact','bracket-min','next-larger'].includes(cfg.boomPolicy||'exact'))throw Error('Política de pluma no válida.');
  if((cfg.radiusPolicy==='next-larger'||(cfg.boomPolicy&&cfg.boomPolicy!=='exact'))&&!cfg.intermediateSource)throw Error('Indicá la nota/página del manual que habilita los valores intermedios.');
  if(!cfg.outriggers||!cfg.sector||!cfg.extension)throw Error('Indicar estabilizadores, sector y patrón de extensión.');
- number(cfg.counterweightKg,'contrapeso');number(cfg.maxAngle,'ángulo máximo',1,90);
+ number(cfg.counterweightKg,'contrapeso');number(cfg.maxAngle,'ángulo máximo',1,90);if(cfg.minAngle!==undefined)number(cfg.minAngle,'ángulo mínimo',0,cfg.maxAngle);
  if(!Array.isArray(cfg.booms)||!cfg.booms.length||!Array.isArray(cfg.rows)||!cfg.rows.length)throw Error('Tabla vacía.');
  let b=-1;for(const L of cfg.booms){number(L,'pluma',0.1);if(L<=b)throw Error('Plumas deben ser únicas y crecientes.');b=L;}
+ if(cfg.minAngles&&(!Array.isArray(cfg.minAngles)||cfg.minAngles.length!==cfg.booms.length||cfg.minAngles.some(x=>!Number.isFinite(x)||x<0||x>cfg.maxAngle)))throw Error('Ángulos mínimos por pluma inválidos.');
  if(cfg.reeving&&(!Array.isArray(cfg.reeving)||cfg.reeving.length!==cfg.booms.length||cfg.reeving.some(x=>!Number.isInteger(x)||x<1)))throw Error('Enhebrado inválido.');
  let r=-1;for(const row of cfg.rows){if(!Array.isArray(row)||row.length!==cfg.booms.length+1)throw Error('Cada fila debe tener radio y una celda por pluma.');number(row[0],'radio',0.01);if(row[0]<=r)throw Error('Radios deben ser únicos y crecientes.');r=row[0];for(const v of row.slice(1)){if(v!==null)number(v,'capacidad',0.001,c.nominalKg);}}
  }return c;

@@ -1,28 +1,27 @@
-# Ampliación de tablas · 11/10/2026
+# Auditoría del catálogo · 13/10/2026
 
-Todas las capacidades son kg; celdas vacías permanecen null. Las matrices almacenan radios/longitudes exactos. Ver criterios de intermedios más abajo. Tablas de folleto para planificación, no equivalencia de revisión/serie de unidad.
+Origen exclusivo: los tres PDF adjuntos del proyecto. La extracción utiliza coordenadas de palabras y celdas, no desplazamiento de valores en filas de texto. Se revisaron visualmente todas las páginas de tablas incluidas. `source-chart-columns.json` conserva las columnas independientes, patrones, páginas impresas/PDF, enhebrado, mínimos de ángulo y capacidades en tn.
 
-| Equipo | Documento de fabricante | Página | Condiciones | Controles (R / L / kg) |
-|---|---|---|---|---|
-| SANY STC300, 33,5 m | 2dd9718ee3a8f8f04aa72d55debe82a0.pdf | 12, PDF 7 | 5,3 × 6,2 m; giro según folleto; contrapeso 2,8 t según p.7 | 3 / 10,65 / 30000; 5,5 / 18,3 / 13350; 30 / 33,5 / 550 |
-| SANY STC500, 43 m | 33af5290b3a5b71c498561d49d057238.pdf | 12, PDF 7 | 6 × 7,2 m; 360°; 3,5 t; modos I y II separados | 3 / 11,5 / 50000; 10 / 19,38 / 10900 I y 12000 II; 34 / 39 / 400 solo II |
-| SANY STC800, 50 m | 59cfc693dd2c4520049372e41102bb1f.pdf | 09, PDF 5 | 8 × 6,43 m; 360°; 15,65 t | 3 / 12,96 / 80000; 28 / 45,56 / 4650; 40 / 50 / 1500 |
-| Tadano GT-600EX, TC-4255-2 | doc_tadano_GT-600EX-1-00101_datasheet_metric_GEN_en.pdf | 9; notas 14 | 6,8 m; 4,37 t; 360° exige quinta pata; I y II separados | 3 / 11 / 60000; 10 / 19 / 11600 I y 14700 II; 36 / 39 / 600 solo II |
+| Documento | SHA-256 | Páginas PDF incluidas | Columnas | Capacidades no vacías |
+|---|---|---|---:|---:|
+| SRC 900C.pdf | 978567683a5bd929e8d4aa83c755a2dcb20108ddf0e39e853e422248123cb4c4 | 6, 7, 8 (dos páginas impresas por página PDF) | 63 | 846 |
+| SRC1300T.pdf | 223e41d8b711bf26fdac1da3c657ffe3b166eece5fd2214df3ca5e0c341c48e5 | 25, 26, 27, 28, 29 | 58 | 999 |
+| SCC 4500A (1).pdf | bac47105c20a680f0884d017c07690ed2fd620b4f8002ff26b9472b636080283 | 37 (H), 46 (HJ) | 20 | 422 |
 
-Las tablas SANY 500/800 y Tadano se extrajeron por columnas del PDF y se cotejaron visualmente. STC300 se transcribió de imagen de la tabla. SANY 800 y Tadano: multiplicación de toneladas por 1000. Sin plumín, sin tablas de estabilizadores parciales ni sobre neumáticos.
+Cada columna original se usa exactamente una vez. La agrupación de SRC900C fija TELE1 en 0, 50 o 100%; T2–4 y modo I/II se conservan por longitud. La de SRC1300T al 100% fija secciones 2#/3#/4#; 5#/6# permanecen expresas por longitud. No se promedian ni se seleccionan máximos entre patrones distintos con igual longitud. En SRC900C la columna 13 de una página PDF es la primera de su mitad derecha; la página impresa también se conserva.
 
-La referencia de Tecmaco se basa en su publicación de Tadano GT 600 EX, unidad TAD095 de 2017: https://tecmaco.com.ar/producto/gt-600-ex-3/?from=ventas. No prueba que esa unidad use la ficha EX-04 de octubre 2010. Se muestra como referencia y se exige cotejar con la unidad real.
+## Controles visuales
 
-Los enlaces completos, páginas y revisiones se encuentran en data.js y en Mis equipos de la app. Para STC300 el folleto mezcla texto de sectores en sus prerrequisitos: cotejar el sector autorizado antes de operar. Los pesos de gancho/aparejos se ingresan explícitamente y la capacidad nominal jamás se usa para estimar una celda.
+- SRC900C p.PDF6: R3/L12,2 = 80 tn; R3/L16,55 con TELE1 0% = 28 tn y con TELE1 50% = 51 tn. P.PDF8: R6/L12,2 = 12,8 tn. En esa misma página L47 tiene mínimo 58°; los mínimos entre paréntesis se conservan por columna.
+- SRC1300T p.25: R2,5/L13 = 130 tn; las tres columnas L17,3 dan 36/65/65 tn. P.28: R2,5/L13 = 90 tn con estabilizadores 50%. P.29: R6/L13 = 24 tn con vigas retraídas. P.29 nota 4 autoriza siguiente mayor en radio y pluma.
+- SCC H p.37: R6/L24 = 450 tn, R10/L48 = 259 tn, R72/L84 = 10 tn. HJ p.46: R8/L48 = 226 tn. No se usan valores de HDB/HJDB como si fueran H/HJ.
 
-## Medidas intermedias · v3.2
+## Parámetros y exclusiones
 
-SANY STC250/STC300/STC500: p.12 nota 6 manda usar el siguiente radio/pluma mayor cuando la medida queda entre dos valores. Se exige que las celdas vecinas que delimitan el intervalo estén habilitadas; no se cruza una celda vacía ni se cambia el modo de extensión. Grove RT540E p.14 nota 3: carga menor del siguiente radio/largo mayor. La app conserva el mínimo entre los vecinos válidos como límite adicional conservador.
+SRC900C pp.PDF3–4: masa 55 tn, CW9,5 tn, ángulo -2° a78°, gancho90tn795kg. El rango de entrada de la app conserva θ no negativo. Pictogramas: 100%7,52×7,4m; 50%7,52×5,25m; 0%7,52×3,1m.
 
-SANY STC800 de 50 m y Tadano GT-600EX EX-04: los documentos precargados no establecen una regla cotejada para R/L intermedios; continúan exigiendo valores exactos. No se infiere una política del fabricante desde otra variante/modelo.
+SRC1300T pp.19–22: masa75,8tn, CW23tn, estabilizadores8,25×8,2m, ángulo -2° a80°. Gancho120tn1130kg, 90tn830kg, 55tn595kg, 8tn180kg. No se incorporan pp.33–34 por incongruencia de la unidad impresa; tampoco p.32 pick&carry ni p.31 plumín.
 
-Para verificar el izaje no se usa promedio lineal, interpolación bilineal ni prolongación de la curva fuera del dominio. El resultado informa coordenadas ingresadas, valores fuente usados, capacidad, criterio y nota de origen.
+SCC p.10: ángulo principal30°–85°, contrapeso trasero180tn y carbody50tn en H/HJ. P.6 gancho450tn10,9tn. P.5 más de225tn requiere doble cabrestante. H78/84m y HJ largos exigen cables de suspensión y montaje conforme pp.35/44. No se infiere masa operativa de la capacidad nominal. No se incorporan FJ, LJ ni superlift porque requieren geometría y condiciones que este motor no representa.
 
-## Referencia matemática · v3.3
-
-`estimation.js` calcula una proyección separada de la verificación. El fabricante no autoriza este algoritmo como capacidad de operación. El resultado lleva `verificationEligible:false`; muestra celdas usadas y la celda tabulada más cercana. El motor de verificación y el buscador de medidas nunca llaman este módulo.
+El código valida las 2267 celdas convertidas contra el registro de columnas, unicidad de fuente/patrón, puntos de control y límites. Los cálculos se mantienen preliminares y deben cotejarse con el manual operativo de la unidad.

@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {CRANES} from '../data.js';import {resolvePosition,solvePosition,assessLift} from '../positions.js';
+import {CRANES} from './fixtures/mathematical-charts.js';import {resolvePosition,solvePosition,assessLift} from '../positions.js';
 const f=CRANES[0].configs[0],p={loadKg:4000,hookKg:320,rigKg:100,otherKg:0,deductionKg:0,limit:75,minRadius:'',pivotHeight:2.5,pivotOffset:0,headroom:1.5};
 const run=(R,L,A='')=>solvePosition(f,p,{radius:R,boom:L,angle:A,hookHeight:''});
 test('R/L conocidos obtienen θ desde horizontal, conservando capacidad de tabla',()=>{const r=run(9.5,16).chosen;assert.ok(Math.abs(r.angle-53.57642635766837)<1e-6);assert.equal(r.capacity,6900);assert.equal(r.angleApproximate,true);assert.equal(r.radius,9.5);});
