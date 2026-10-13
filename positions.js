@@ -38,8 +38,10 @@ export function solvePosition(cfg,p,known){
  }else solved=solveAutomatic(cfg,p,{radius:resolved.radius,boom:resolved.boom,hookHeight:known.hookHeight});
  const fixed=resolved.radius!==''&&resolved.boom!=='';
  const updated=solved.options.map(r=>{
-  const geometryPass=!!r.geometry&&r.geometry.angle<=cfg.maxAngle+1e-8&&r.geometry.angle>=minimumAngle(cfg,r)-1e-8&&(!r.hasRequiredHeight||r.geometry.reach);
-  return {...r,geometryPass,angle:resolved.angle??r.geometry?.angle??null,angleApproximate:resolved.angle===null,pass:r.pass&&geometryPass};
+  const angle=resolved.angle??r.geometry?.angle??null,minAngle=minimumAngle(cfg,r);
+  const anglePass=Number.isFinite(angle)&&angle<=cfg.maxAngle+1e-8&&angle>=minAngle-1e-8;
+  const geometryPass=anglePass&&!!r.geometry&&r.geometry.angle<=cfg.maxAngle+1e-8&&r.geometry.angle>=minAngle-1e-8&&(!r.hasRequiredHeight||r.geometry.reach);
+  return {...r,geometryPass,anglePass,minAngle,maxAngle:cfg.maxAngle,angle,angleApproximate:resolved.angle===null,pass:r.pass&&geometryPass};
  });
  const options=fixed?updated:updated.filter(r=>r.pass);
  if(!options.length)throw Error('No hay combinación que cumpla la geometría y el ángulo máximo de esta configuración.');

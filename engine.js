@@ -37,16 +37,17 @@ export function lookup(cfg,radius,boom){
  const r=number(radius,'radio',.01),L=number(boom,'pluma',.1);
  const ra=tableAxis(cfg.rows.map(row=>row[0]),r,'radio',cfg.radiusPolicy),ba=tableAxis(cfg.booms,L,'pluma',cfg.boomPolicy||'exact');
  if((ra.derived&&cfg.radiusPolicy==='next-larger'||ba.derived&&(cfg.boomPolicy||'exact')!=='exact')&&!cfg.intermediateSource)throw Error('Falta la nota del manual para resolver estas medidas intermedias.');
- // Ambos límites deben ser válidos: una celda vacía no define un dominio de capacidad.
+ // Con siguiente mayor se lee la celda indicada por el manual, sin interpolar.
+ // Para mínimo de vecinos, ambos extremos se usan y deben tener capacidad.
  const bounds=ra.bounds.flatMap(i=>ba.bounds.map(j=>({radius:cfg.rows[i][0],boom:cfg.booms[j],capacity:cfg.rows[i][j+1]})));
- if(bounds.some(c=>c.capacity===null))throw Error('Celda vacía: no se puede resolver entre celdas no válidas ni extender el alcance de esta configuración.');
  const cells=ra.used.flatMap(i=>ba.used.map(j=>({radius:cfg.rows[i][0],boom:cfg.booms[j],capacity:cfg.rows[i][j+1]})));
+ if(cells.some(c=>c.capacity===null))throw Error('Celda vacía: no hay capacidad en las celdas que indica el criterio del manual.');
  const derived=ra.derived||ba.derived,hasMin=(ra.derived&&cfg.radiusPolicy==='bracket-min')||(ba.derived&&cfg.boomPolicy==='bracket-min');
  return {capacity:Math.min(...cells.map(c=>c.capacity)),usedRadii:ra.used.map(i=>cfg.rows[i][0]),usedBooms:ba.used.map(j=>cfg.booms[j]),boom:L,derived,cells,bounds,
   policySource:derived?cfg.intermediateSource||'Criterio conservador de radios ingresado con la tabla.':'',
   method:!derived?'Celda exacta':hasMin?'Mínimo de celdas contiguas válidas (criterio conservador del manual)':'Siguiente radio/pluma mayor según manual (sin interpolación lineal)'};
 }
-export function grossMass(p){return number(p.loadKg,'peso de carga',0.001)+number(p.hookKg,'gancho')+number(p.rigKg,'aparejos')+number(p.otherKg,'otros suspendidos');}
+export function grossMass(p){return number(p.loadKg,'peso de carga',0.001)+number(p.hookKg,'gancho')+number(p.rigKg,'aparejos')+number(p.otherKg,'otros suspendidos')+number(p.belowKg??0,'accesorios debajo de eslingas');}
 export function craneCheck(cfg,p){
  const chart=lookup(cfg,p.radius,p.boom),gross=grossMass(p),limit=number(p.limit,'límite de utilización',1,75)/100,deduction=number(p.deductionKg,'deducciones');
  const netCapacity=chart.capacity-deduction;if(netCapacity<=0)throw Error('Las deducciones anulan la capacidad tabulada.');
@@ -88,8 +89,9 @@ export function slingCheck(p){
  if(!['flat','round','chain','wire'].includes(type))throw Error('Tipo de eslinga no válido.');
  if(!['straight','choke','basket','legs2','legs2choke','legs3','legs4','asym2'].includes(mode))throw Error('Configuración no válida.');
  if(type==='wire'){
+ const beta=['straight','choke'].includes(mode)?0:betaFromInput(p);
  const assembly=number(p.assemblyWll,'WLL certificado para configuración y ángulo',0.001);
- return {load,assemblyCapacity:assembly,percent:load/assembly*100,pass:load<=assembly,certifiedOnly:true,notes:['Cable de acero: se usa el WLL del conjunto certificado para este ángulo/amarre; no se aplican factores textiles.']};
+ return {load,beta,assemblyCapacity:assembly,percent:load/assembly*100,pass:load<=assembly,certifiedOnly:true,notes:['Cable de acero: se usa el WLL del conjunto certificado para este ángulo/amarre; no se aplican factores textiles.']};
  }
  if(type==='chain'&&mode==='basket')throw Error('Cesta de cadena: requiere la tabla del conjunto específico; no se usa factor de cesta textil.');
  let beta=['straight','choke'].includes(mode)?0:betaFromInput(p),n=mode==='legs3'?3:mode==='legs4'?(p.equalized?3:2):mode==='straight'||mode==='choke'?1:2;

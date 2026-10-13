@@ -1,4 +1,4 @@
-# IzajeLab · v4.2.2
+# IzajeLab · v4.2.3
 
 Aplicación estática en español para calcular utilización de grúa y verificar lingado en dos posiciones. GitHub Pages: https://sebastiandc99.github.io/IzajeLab/.
 
@@ -18,11 +18,15 @@ Sólo se habilitan configuraciones representables por pluma principal recta. No 
 
 SRC1300T admite siguiente radio/pluma mayor dentro del mismo patrón según p.29 nota 4. SRC900C y SCC4500A conservan medidas exactas al no disponer de una regla cotejada para intermedios. Las estimaciones matemáticas pueden mostrarse como referencia, con el valor tabulado fuente, y nunca producen APTO.
 
-## Selección de pluma · v4.2.2
+## Selección de pluma · v4.2.3
 
 La lista de plumas de las telescópicas reúne todas las longitudes tabuladas para los mismos estabilizadores, contrapeso, base de tabla y sector. Al ingresar una longitud exacta que necesita un único patrón distinto, se ajusta ese patrón y se muestran sus porcentajes; se borra la confirmación de unidad. Si hay varios patrones compatibles y el activo no sirve, se exige elegir, sin tomar el de mayor capacidad. Las dos posiciones deben estar cubiertas por el patrón elegido; un cambio de patrón entre extremos requiere replantear la configuración. H/HJ de la SCC permanecen montajes separados. Los intermedios siguen la política del patrón activo.
 
 Caso cotejado SRC900C: R22/L47, estabilizadores 100%, contrapeso 9,5 tn, TELE1–4 100%, PDF6 / impresa11, columna21: capacidad 5,3 tn. Al 75%, 3,975 tn de peso suspendido antes de otras deducciones. No se modificaron capacidades ni reglas de interpolación. Las pruebas recorren el acceso a las 141 columnas y conservan el cotejo de las 2267 capacidades.
+
+## Auditoría de funcionamiento · v4.2.3
+
+Se corrigieron pesos de accesorios bajo eslingas omitidos en la grúa, límites del ángulo manual, radio mínimo del sitio, rechazo de la celda superior válida en SRC1300T, validación angular del cable certificado e importaciones con configuración/unidad/tipos inválidos. No se cambiaron capacidades del catálogo. Ver [comparación manual y pruebas](docs/audit-2026-10-13.md).
 
 ## Funcionamiento
 
