@@ -83,3 +83,7 @@ Las dos posiciones usan un desplegable nativo con todas las longitudes tabuladas
 Los dos croquis tienen más espacio vertical; el encuadre de la grúa reduce márgenes vacíos para ampliar la figura y sus cotas, conservando la escala de R/L y extendiéndose cuando las dimensiones de carga o los avisos lo requieren. El croquis de eslingado también tiene más espacio.
 
 286 pruebas aprobadas, incluidos cambios sucesivos mediante ambos selectores, conservación del radio y renovación de geometría, sincronización manual/automática y cambios de modelo/montaje. Los 50 ejemplos independientes siguen coincidiendo.
+
+## Croquis ampliados nuevamente - v4.4.2
+
+Se amplía nuevamente el encuadre de las dos posiciones, reduciendo el ancho vacío habitual de 740 a 620 unidades de dibujo, con crecimiento automático para no cortar las cotas, la carga ni los avisos. El eslingado también tiene un encuadre más cercano que contempla la perspectiva de 3 y 4 ramales. Aumenta el espacio vertical en celular y escritorio.
