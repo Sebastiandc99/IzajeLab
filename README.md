@@ -1,4 +1,4 @@
-# IzajeLab · v4.3.0
+# IzajeLab · v4.3.1
 
 Aplicación estática en español para calcular utilización de grúa y verificar lingado en dos posiciones. GitHub Pages: https://sebastiandc99.github.io/IzajeLab/.
 
@@ -64,3 +64,10 @@ Capacidades transcritas visualmente de los PDF, con cuentas independientes en to
 Toneladas primero en carga, gancho, aparejos, accesorios, deducciones y capacidades de eslingas; kilogramo sigue disponible con conversión automática. La pantalla de eslingas comienza con su peso propio, separado de la capacidad de etiqueta obligatoria. Peso propio vacío = 0; carga, capacidad individual y capacidad certificada no vienen precargadas. Los análisis anteriores sin campos de unidad nuevos se interpretan como kg y se recalculan.
 
 Cable de acero certificado: exige la capacidad del conjunto para el amarre y ángulo elegido; no exige la capacidad individual oculta que esa fórmula no utiliza. Ángulo y capacidad del conjunto se siguen validando. Selectores, criterios, nombres de materiales e informe se muestran en español; se conservan códigos de modelo, montaje, secciones y símbolos técnicos.
+
+
+## Geometría independiente y campos de pesos - v4.3.1
+
+Caso de la captura: SRC900C R15/L33,95. La longitud es tabulada; R15 está entre filas R14 y R16. La tabla del PDF no autoriza un criterio operativo intermedio, por lo que la capacidad queda sin verificar. La geometría se obtiene por separado: θ≈63,78° con desplazamiento de pivote cero. La pantalla completa el ángulo, conserva el radio físico15 y muestra vecinos, capacidad estimada y referencia tabulada, sin permitir APTO por interpolación. No se completan radios/plumas por la estimación ni se confunde con una capacidad publicada. Una celda vacía también puede mostrar geometría sin inventar capacidad.
+
+Controles de masa: número y unidad en filas separadas, altura56px y fuente18–20px. En celular, los ajustes comunes de carga ocupan una sola columna y el selector de unidad de carga va debajo del número. Se conserva la conversión automática tn/kg.

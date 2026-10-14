@@ -60,4 +60,14 @@ header{max-width:1200px;padding:18px 22px}main{max-width:1200px;padding:18px 22p
 .crane-angle-reference{margin:0 0 20px;max-width:780px;padding:18px}.crane-angle-reference h2{font-size:19px;margin-bottom:7px}.crane-angle-reference figcaption p{font-size:14px;margin:0}.crane-angle-reference svg{display:block;width:100%;max-width:640px;height:auto;margin:12px auto 0}.crane-angle-reference>.hint{margin:0;font-size:12px}
 @media(max-width:700px){.mosaic-tile.verification-failed,.mosaic-tile.verification-failed:hover{padding:15px 12px}.crane-angle-reference{padding:14px}.crane-angle-reference h2{font-size:17px}}
 
-.mass-controls{display:grid;grid-template-columns:minmax(0,1fr) 155px;gap:8px}.mass-controls input,.mass-controls select{min-width:0;width:100%}.mass-controls select{font-size:12px}@media(max-width:500px){.mass-controls{grid-template-columns:minmax(0,1fr) 135px}.weight-controls{grid-template-columns:minmax(0,1fr) 135px}}
+/* Pesos: espacio real para el número y la unidad, incluso dentro de una columna. */
+.mass-controls{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.mass-controls input,.mass-controls select{min-width:0;width:100%;min-height:56px;font-size:18px}
+.mass-controls input{font-weight:650}.mass-controls select{font-size:16px}
+.weight-controls{grid-template-columns:minmax(0,1fr) 160px}
+.geometry-preview{padding:10px;border-radius:8px;background:#f6f2ff;color:#50316e;font-size:13px;line-height:1.6}
+@media(max-width:700px){
+ #cargoPanel .grid2{grid-template-columns:minmax(0,1fr)}
+ .weight-controls{grid-template-columns:minmax(0,1fr)}
+ .mass-controls{gap:10px}.mass-controls input{font-size:20px}
+}

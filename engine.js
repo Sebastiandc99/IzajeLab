@@ -29,7 +29,7 @@ export function tableAxis(values,value,name,policy='exact'){
  if(exact>=0)return {bounds:[exact],used:[exact],derived:false};
  const hi=values.findIndex(x=>x>v);
  if(hi<=0)throw Error(`${name}: fuera del rango tabulado (${values[0]} a ${values.at(-1)} m). No hay capacidad verificable fuera de tabla.`);
- if(policy==='exact')throw Error(`${name}: el manual cargado no habilita medidas intermedias. Elegí un valor exacto de la tabla o cargá el criterio del manual de la unidad.`);
+ if(policy==='exact')throw Error(`${name}: ${v.toLocaleString('es-AR')} m no está tabulado; las medidas vecinas son ${values[hi-1].toLocaleString('es-AR')} y ${values[hi].toLocaleString('es-AR')} m. El manual cargado no habilita medidas intermedias para verificar la capacidad. La geometría se calcula por separado.`);
  if(!['next-larger','bracket-min'].includes(policy))throw Error('Criterio de tabla no reconocido.');
  return {bounds:[hi-1,hi],used:policy==='next-larger'?[hi]:[hi-1,hi],derived:true};
 }

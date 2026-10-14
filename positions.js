@@ -21,6 +21,18 @@ export function resolvePosition(known,p){
  return {radius:radius??'',boom:boom??'',angle:A,auto:{radius:R===null,boom:L===null,angle:A===null}};
 }
 
+// La geometría puede resolverse aun cuando no exista una capacidad verificable.
+// Esta vista previa no consulta la tabla ni habilita el izaje.
+export function previewPositionGeometry(known,p){
+ const resolved=resolvePosition(known,p);
+ if(resolved.radius===''||resolved.boom==='')return null;
+ const H=has(known.hookHeight)?number(known.hookHeight,'altura del gancho',.01):null;
+ const g=geometry(resolved.radius,resolved.boom,{...p,landingHeight:H??0,loadHeight:0,rigHeight:0});
+ const availableHeight=g.tipHeight-number(p.headroom,'reserva de gancho',.01);
+ return {radius:resolved.radius,boom:resolved.boom,angle:resolved.angle??g.angle,angleApproximate:resolved.auto.angle,
+  hookHeight:H??(availableHeight>0?availableHeight:null),heightApproximate:H===null,geometry:g,verificationEligible:false};
+}
+
 export function solvePosition(cfg,p,known){
  if(!['radius','boom','angle'].some(key=>has(known[key]))){const e=Error((has(known.hookHeight)?'La altura sola no define esta posición. ':'')+'Falta completar: ingresá radio R, pluma L o ángulo θ (al menos uno).');e.code='MISSING_POSITION_DATA';throw e;}
  const resolved=resolvePosition(known,p);let solved;
