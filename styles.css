@@ -106,3 +106,10 @@ header{max-width:1200px;padding:18px 22px}main{max-width:1200px;padding:18px 22p
 
 #telescopicChoices{margin:18px 0}#extensionLegend{font-weight:650;font-size:13px;overflow-wrap:anywhere}
 #extensionConfig{font-size:15px}.flow-heading{margin:20px 0 14px}
+
+/* Logo original integrado al fondo, centrado en todas las pantallas. */
+header.app-header{flex-direction:column;justify-content:center;gap:5px;padding:18px 22px 14px}
+.app-header .brand{display:block;width:min(350px,100%);line-height:0;border-radius:12px}
+.brand-logo{display:block;width:100%;height:auto;aspect-ratio:1488/830;mix-blend-mode:multiply;overflow:hidden}
+.app-header>span{text-align:center}
+@media(max-width:700px){header.app-header{padding:14px 16px 12px}.app-header .brand{width:min(310px,100%)}}

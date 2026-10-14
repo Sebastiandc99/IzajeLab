@@ -1,4 +1,4 @@
-# IzajeLab · v4.3.1
+# IzÁngel · v4.3.1
 
 Aplicación estática en español para calcular utilización de grúa y verificar lingado en dos posiciones. GitHub Pages: https://sebastiandc99.github.io/IzajeLab/.
 
@@ -127,3 +127,7 @@ Para una misma longitud se muestran todos los porcentajes de TELE1–4 (SRC900C)
 Cambiar los apoyos borra longitudes que no existan en la nueva familia, sin redondearlas. SCC4500A ofrece primero el montaje H/HJ y luego sus longitudes de celosía; no muestra porcentajes telescópicos. Se conservan las longitudes propuestas cuando el usuario deja ese dato vacío, así como los controles de estabilidad, ángulo, utilización y lingado existentes.
 
 300 pruebas aprobadas, con recorridos de las 141 columnas y casos concretos de ambos PDF telescópicos, cambios de apoyo, compatibilidad de las dos posiciones y H/HJ. Los 50 ejemplos independientes mantienen coincidencia; las 2267 capacidades fuente no se modificaron.
+
+## Identidad IzÁngel - v4.5.1
+
+La app usa el nombre IzÁngel en el encabezado, título, instalación e informes. El logo original se centra en el encabezado, con encuadre ajustado al dibujo y fusión de su fondo blanco con el fondo de la app. Se incluye en la publicación, caché sin conexión y archivo portable. Los identificadores de análisis y almacenamiento previos se conservan para mantener compatibilidad.
