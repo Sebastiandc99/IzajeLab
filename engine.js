@@ -12,8 +12,9 @@ export function validateCrane(c){
  for(const cfg of c.configs){
  if(ids.has(cfg.id)||!cfg.id||!cfg.name)throw Error('Configuraciones sin identificar o repetidas.');ids.add(cfg.id);
  if(cfg.basis!=='gross')throw Error('Solo se admiten tablas de capacidad bruta; convertir/cotejar antes de importar.');
- if(!['exact','bracket-min','next-larger'].includes(cfg.radiusPolicy))throw Error('Política de radio no válida.');
- if(!['exact','bracket-min','next-larger'].includes(cfg.boomPolicy||'exact'))throw Error('Política de pluma no válida.');
+ if(!['exact','bracket-min','next-larger','project-conservative'].includes(cfg.radiusPolicy))throw Error('Política de radio no válida.');
+ if(!['exact','bracket-min','next-larger','project-conservative'].includes(cfg.boomPolicy||'exact'))throw Error('Política de pluma no válida.');
+ if([cfg.radiusPolicy,cfg.boomPolicy].includes('project-conservative')&&(cfg.policyOrigin!=='project'||!cfg.intermediateSource))throw Error('Identificá el criterio conservador del proyecto y su fuente.');
  if((cfg.radiusPolicy==='next-larger'||(cfg.boomPolicy&&cfg.boomPolicy!=='exact'))&&!cfg.intermediateSource)throw Error('Indicá la nota/página del manual que habilita los valores intermedios.');
  if(!cfg.outriggers||!cfg.sector||!cfg.extension)throw Error('Indicar estabilizadores, sector y patrón de extensión.');
  number(cfg.counterweightKg,'contrapeso');number(cfg.maxAngle,'ángulo máximo',1,90);if(cfg.minAngle!==undefined)number(cfg.minAngle,'ángulo mínimo',0,cfg.maxAngle);
@@ -30,8 +31,8 @@ export function tableAxis(values,value,name,policy='exact'){
  const hi=values.findIndex(x=>x>v);
  if(hi<=0)throw Error(`${name}: fuera del rango tabulado (${values[0]} a ${values.at(-1)} m). No hay capacidad verificable fuera de tabla.`);
  if(policy==='exact')throw Error(`${name}: ${v.toLocaleString('es-AR')} m no está tabulado; las medidas vecinas son ${values[hi-1].toLocaleString('es-AR')} y ${values[hi].toLocaleString('es-AR')} m. El manual cargado no habilita medidas intermedias para verificar la capacidad. La geometría se calcula por separado.`);
- if(!['next-larger','bracket-min'].includes(policy))throw Error('Criterio de tabla no reconocido.');
- return {bounds:[hi-1,hi],used:policy==='next-larger'?[hi]:[hi-1,hi],derived:true};
+ if(!['next-larger','bracket-min','project-conservative'].includes(policy))throw Error('Criterio de tabla no reconocido.');
+ return {bounds:[hi-1,hi],used:policy==='bracket-min'?[hi-1,hi]:[hi],derived:true};
 }
 export function lookup(cfg,radius,boom){
  const r=number(radius,'radio',.01),L=number(boom,'pluma',.1);
@@ -40,12 +41,18 @@ export function lookup(cfg,radius,boom){
  // Con siguiente mayor se lee la celda indicada por el manual, sin interpolar.
  // Para mínimo de vecinos, ambos extremos se usan y deben tener capacidad.
  const bounds=ra.bounds.flatMap(i=>ba.bounds.map(j=>({radius:cfg.rows[i][0],boom:cfg.booms[j],capacity:cfg.rows[i][j+1]})));
- const cells=ra.used.flatMap(i=>ba.used.map(j=>({radius:cfg.rows[i][0],boom:cfg.booms[j],capacity:cfg.rows[i][j+1]})));
- if(cells.some(c=>c.capacity===null))throw Error('Celda vacía: no hay capacidad en las celdas que indica el criterio del manual.');
+ let cells=ra.used.flatMap(i=>ba.used.map(j=>({radius:cfg.rows[i][0],boom:cfg.booms[j],capacity:cfg.rows[i][j+1]})));
+ const project=[cfg.radiusPolicy,cfg.boomPolicy].includes('project-conservative');
+ if(project&&(cfg.policyOrigin!=='project'||!cfg.intermediateSource))throw Error('Falta identificar el criterio conservador del proyecto.');
+ if(cells.some(c=>c.capacity===null))throw Error('Celda vacía: no hay capacidad en la referencia requerida por el criterio de tabla.');
+ // El proyecto exige la referencia superior válida y compara los vecinos disponibles.
+ // Una subida local de capacidad nunca aumenta la capacidad elegida para el intermedio.
+ if(project)cells=bounds.filter(c=>c.capacity!==null);
  const derived=ra.derived||ba.derived,hasMin=(ra.derived&&cfg.radiusPolicy==='bracket-min')||(ba.derived&&cfg.boomPolicy==='bracket-min');
- return {capacity:Math.min(...cells.map(c=>c.capacity)),usedRadii:ra.used.map(i=>cfg.rows[i][0]),usedBooms:ba.used.map(j=>cfg.booms[j]),boom:L,derived,cells,bounds,
+ const capacity=Math.min(...cells.map(c=>c.capacity)),governing=cells.filter(c=>c.capacity===capacity).sort((a,b)=>b.radius-a.radius||b.boom-a.boom)[0];
+ return {capacity,usedRadii:project?[governing.radius]:ra.used.map(i=>cfg.rows[i][0]),usedBooms:project?[governing.boom]:ba.used.map(j=>cfg.booms[j]),geometryReferenceBooms:ba.bounds.map(j=>cfg.booms[j]),boom:L,derived,cells,bounds,policyOrigin:project?'project':'table',
   policySource:derived?cfg.intermediateSource||'Criterio conservador de radios ingresado con la tabla.':'',
-  method:!derived?'Celda exacta':hasMin?'Mínimo de celdas contiguas válidas (criterio conservador del manual)':'Siguiente radio/pluma mayor según manual (sin interpolación lineal)'};
+  method:!derived?'Celda exacta':project?'Menor capacidad entre vecinos; referencia superior válida (criterio conservador del proyecto, sin interpolar)':hasMin?'Mínimo de celdas contiguas válidas (criterio conservador del manual)':'Siguiente radio/pluma mayor según manual (sin interpolación lineal)'};
 }
 export function grossMass(p){return number(p.loadKg,'peso de carga',0.001)+number(p.hookKg,'gancho')+number(p.rigKg,'aparejos')+number(p.otherKg,'otros suspendidos')+number(p.belowKg??0,'accesorios debajo de eslingas');}
 export function craneCheck(cfg,p){
@@ -93,7 +100,7 @@ export function slingCheck(p){
  const assembly=number(p.assemblyWll,'WLL certificado para configuración y ángulo',0.001);
  return {load,beta,assemblyCapacity:assembly,percent:load/assembly*100,pass:load<=assembly,certifiedOnly:true,notes:['Cable de acero: se usa el WLL del conjunto certificado para este ángulo/amarre; no se aplican factores textiles.']};
  }
- const wll=number(p.wllKg,'capacidad de etiqueta vertical por eslinga/ramal',0.001);
+ const wll=number(p.wllKg,'capacidad de la eslinga en vertical por eslinga/ramal',0.001);
  if(type==='chain'&&mode==='basket')throw Error('Cesta de cadena: requiere la tabla del conjunto específico; no se usa factor de cesta textil.');
  let beta=['straight','choke'].includes(mode)?0:betaFromInput(p),n=mode==='legs3'?3:mode==='legs4'?(p.equalized?3:2):mode==='straight'||mode==='choke'?1:2;
  const choke=['choke','legs2choke'].includes(mode)?0.8:1;let bandFactor=n===1?1:n===3?(beta<=45?2.1:1.5):(mode==='basket'&&beta<=7?2:beta<=45?1.4:1);

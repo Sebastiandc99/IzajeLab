@@ -20,7 +20,7 @@ rows=[
 ('900','outrigger-8-t1-50',8,14,10,16.55,3.9,2,.795,.1,0,0,0,1,30,'Grúa cumple; eslingas no cumplen'),
 ('900','outrigger-8-t1-100',8,15,16,47,1.2,.5,.16,.03,.1,0,.02,1,30,'Gancho de bola de 8 tn supuesto: 0,16 tn'),
 ('900','outrigger-8-t1-100',8,15,22,47,None,1,.795,.1,0,0,0,2,30,'Celda vacía: sin capacidad'),
-('900','outrigger-6-t1-100',6,11,22.5,47,None,1,.795,.1,0,0,0,2,30,'Radio intermedio sin regla documentada: estimación no aprueba'),
+('900','outrigger-6-t1-100',6,11,22.5,47,4.2,1,.795,.1,0,0,0,2,30,'Criterio del proyecto: radio 24, capacidad 4,2 tn'),
 ('900','outrigger-6-t1-100',6,11,40,47,None,1,.795,.1,0,0,0,2,30,'Fuera del rango tabulado'),
 ('1300','full-0-0-0',25,25,4,13,87,55,1.13,.2,0,0,0,55,30,'Pluma básica'),
 ('1300','full-0-0-0',25,25,8,17.3,33.3,20,1.13,.2,0,0,0,20,30,'17,3 m: T2/T3/T4 0/0/0'),
@@ -54,7 +54,7 @@ rows=[
 ('4500','HJ',46,46,80,96,4.1,1.5,.9,.1,0,0,.1,2,30,'Gancho de bola de 16 tn supuesto: 0,9 tn'),
 ('4500','H',37,37,8,24,369,100,10.9,1,0,0,0,50,30,'Grúa cumple; eslingas insuficientes'),
 ('4500','H',37,37,8,84,None,1,10.9,.1,0,0,0,2,30,'Celda vacía para pluma larga y radio corto'),
-('4500','HJ',46,46,31,96,None,1,10.9,.1,0,0,0,2,30,'Radio no tabulado en HJ: no se verifica por promedio')]
+('4500','HJ',46,46,31,96,55.7,1,10.9,.1,0,0,0,2,30,'Criterio del proyecto: radio 32, capacidad 55,7 tn')]
 assert len(rows)==50
 out=[]
 for i,(m,cfg,p,pr,R,L,C,W,H,A,B,O,Ded,S,beta,note) in enumerate(rows,1):
@@ -67,6 +67,6 @@ for i,(m,cfg,p,pr,R,L,C,W,H,A,B,O,Ded,S,beta,note) in enumerate(rows,1):
   cap=d(C);net=cap-d(Ded);allowed=net*d('.75');percent=gross/net*100
   expected.update({'capacityT':str(cap),'netT':str(net),'allowedT':str(allowed),'percent':str(percent),'cranePass':gross<=allowed,'status':'APTO' if gross<=allowed and slingpass else 'NO APTO'})
  else:expected.update({'capacityT':None,'status':'SIN VERIFICAR'})
- usedR={26:11,27:22,28:11,29:14}.get(i,R);usedL={28:30.2,29:25.9}.get(i,L)
+ usedR={16:24,50:32,26:11,27:22,28:11,29:14}.get(i,R);usedL={28:30.2,29:25.9}.get(i,L)
  out.append({'id':i,'model':{'900':'sany-src900c','1300':'sany-src1300t','4500':'sany-scc4500a'}[m],'config':cfg,'pdfPage':p,'printedPage':pr,'radius':R,'boom':L,'usedRadius':usedR,'usedBoom':usedL,'loadT':W,'hookT':H,'rigT':A,'belowT':B,'otherT':O,'deductionT':Ded,'wllT':S,'beta':beta,'note':note,'expected':expected})
 (Path(__file__).resolve().parents[1]/'tests/fixtures/manual-50.json').write_text(json.dumps(out,indent=2,ensure_ascii=False)+'\n')

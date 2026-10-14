@@ -528,7 +528,7 @@
     "printedPage": 11,
     "radius": 22.5,
     "boom": 47,
-    "usedRadius": 22.5,
+    "usedRadius": 24,
     "usedBoom": 47,
     "loadT": 1,
     "hookT": 0.795,
@@ -538,7 +538,7 @@
     "deductionT": 0,
     "wllT": 2,
     "beta": 30,
-    "note": "Radio intermedio sin regla documentada: estimación no aprueba",
+    "note": "Criterio del proyecto: radio 24, capacidad 4,2 tn",
     "expected": {
       "grossT": "1.895",
       "slingLoadT": "1",
@@ -547,8 +547,12 @@
       "slingPass": true,
       "factor": "1.4",
       "tensionKn": 5.6618720173484425,
-      "capacityT": null,
-      "status": "SIN VERIFICAR"
+      "capacityT": "4.2",
+      "netT": "4.2",
+      "allowedT": "3.150",
+      "percent": "45.11904761904761904761904762",
+      "cranePass": true,
+      "status": "APTO"
     }
   },
   {
@@ -1702,7 +1706,7 @@
     "printedPage": 46,
     "radius": 31,
     "boom": 96,
-    "usedRadius": 31,
+    "usedRadius": 32,
     "usedBoom": 96,
     "loadT": 1,
     "hookT": 10.9,
@@ -1712,7 +1716,7 @@
     "deductionT": 0,
     "wllT": 2,
     "beta": 30,
-    "note": "Radio no tabulado en HJ: no se verifica por promedio",
+    "note": "Criterio del proyecto: radio 32, capacidad 55,7 tn",
     "expected": {
       "grossT": "12.0",
       "slingLoadT": "1",
@@ -1721,8 +1725,12 @@
       "slingPass": true,
       "factor": "1.4",
       "tensionKn": 5.6618720173484425,
-      "capacityT": null,
-      "status": "SIN VERIFICAR"
+      "capacityT": "55.7",
+      "netT": "55.7",
+      "allowedT": "41.775",
+      "percent": "21.54398563734290843806104129",
+      "cranePass": true,
+      "status": "APTO"
     }
   }
 ]

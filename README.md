@@ -16,7 +16,7 @@ Se preservan 141 columnas fuente y 2267 capacidades; toneladas convertidas a kg,
 
 Sólo se habilitan configuraciones representables por pluma principal recta. No se habilitan plumines, jib abatible, superlift, pick & carry ni tablas sobre neumáticos. SRC1300T pp.33–34 imprime `Unit: kg` con números decimales de interpretación ambigua; esas páginas no se convierten ni habilitan. Los PDF completos contienen más configuraciones que las implementadas.
 
-SRC1300T admite siguiente radio/pluma mayor dentro del mismo patrón según p.29 nota 4. SRC900C y SCC4500A conservan medidas exactas al no disponer de una regla cotejada para intermedios. Las estimaciones matemáticas pueden mostrarse como referencia, con el valor tabulado fuente, y nunca producen APTO.
+Desde v4.4.0, las tres grúas aplican el criterio conservador del proyecto: exige referencia superior válida y toma la menor capacidad de los vecinos disponibles dentro de la configuración seleccionada. Conserva R/L reales y bloquea fuera de rango o referencia superior vacía. Esta elección del proyecto no se presenta como autorización del fabricante. Las estimaciones matemáticas pueden mostrarse como referencia, con el valor tabulado fuente, y nunca producen APTO.
 
 ## Selección de pluma · v4.3.0
 
@@ -52,22 +52,26 @@ El service worker conserva una copia offline y cambia de caché por versión. Un
 La SCC4500A conserva una única longitud de pluma de celosía para ambos extremos: si las búsquedas independientes difieren, se busca la menor longitud común compatible. Longitudes manuales distintas o ausencia de solución común bloquean APTO con una razón explícita.
 
 
-## Auditoría independiente de 50 ejemplos - v4.3.0
+## Auditoría independiente de 50 ejemplos - origen v4.3.0, actualizada v4.4.0
 
-Capacidades transcritas visualmente de los PDF, con cuentas independientes en toneladas usando Decimal: 17 casos SRC900C, 17 SRC1300T y 16 SCC4500A. Incluye 44 resultados numéricos y 6 casos sin capacidad verificable. No se modificaron las 2267 capacidades ni las 141 columnas del catálogo. Cada ejemplo se compara con el motor y recorre también el formulario en toneladas.
+Capacidades transcritas visualmente de los PDF, con cuentas independientes en toneladas usando Decimal: 17 casos SRC900C, 17 SRC1300T y 16 SCC4500A. Con el criterio v4.4.0 incluye 46 resultados numéricos y 4 casos sin capacidad verificable. Los documentos v4.3.0 conservan la auditoría histórica de 44 resultados y 6 casos bloqueados. No se modificaron las 2267 capacidades ni las 141 columnas del catálogo. Cada ejemplo se compara con el motor y recorre también el formulario en toneladas.
 
 - Oráculos: `tests/fixtures/manual-50.json`.
 - Comparación: `node tools/compare-manual-50.mjs`.
 - Cuentas y condiciones: `docs/manual-50-audit.md`.
 - Resultados completos: `docs/manual-50-results.json`.
 
-Toneladas primero en carga, gancho, aparejos, accesorios, deducciones y capacidades de eslingas; kilogramo sigue disponible con conversión automática. La pantalla de eslingas comienza con su peso propio, separado de la capacidad de etiqueta obligatoria. Peso propio vacío = 0; carga, capacidad individual y capacidad certificada no vienen precargadas. Los análisis anteriores sin campos de unidad nuevos se interpretan como kg y se recalculan.
+Toneladas primero en carga y capacidades; kilogramos primero en gancho, aparejos, accesorios y deducciones. Todos admiten ambas unidades con conversión automática. La pantalla de eslingas comienza con “Ingresá capacidad de la eslinga”, seguida de su peso propio. Peso propio vacío = 0; carga, capacidad individual y capacidad certificada no vienen precargadas. Los análisis anteriores sin campos de unidad nuevos se interpretan como kg y se recalculan.
 
 Cable de acero certificado: exige la capacidad del conjunto para el amarre y ángulo elegido; no exige la capacidad individual oculta que esa fórmula no utiliza. Ángulo y capacidad del conjunto se siguen validando. Selectores, criterios, nombres de materiales e informe se muestran en español; se conservan códigos de modelo, montaje, secciones y símbolos técnicos.
 
 
 ## Geometría independiente y campos de pesos - v4.3.1
 
-Caso de la captura: SRC900C R15/L33,95. La longitud es tabulada; R15 está entre filas R14 y R16. La tabla del PDF no autoriza un criterio operativo intermedio, por lo que la capacidad queda sin verificar. La geometría se obtiene por separado: θ≈63,78° con desplazamiento de pivote cero. La pantalla completa el ángulo, conserva el radio físico15 y muestra vecinos, capacidad estimada y referencia tabulada, sin permitir APTO por interpolación. No se completan radios/plumas por la estimación ni se confunde con una capacidad publicada. Una celda vacía también puede mostrar geometría sin inventar capacidad.
+Caso de la captura: SRC900C R15/L33,95. La longitud es tabulada; R15 está entre filas R14 y R16. En v4.3.1 no se había cotejado una regla operativa del fabricante y la capacidad quedaba sin verificar. Desde v4.4.0, la elección expresa del usuario habilita el criterio conservador del proyecto: R15/L33,95, patrón T1 0% y estabilizadores 100%, usa R16 y 6,7 tn brutas, sin promediar. La geometría se obtiene por separado: θ≈63,78° con desplazamiento de pivote cero. La pantalla completa el ángulo y conserva el radio físico 15. El resultado muestra la referencia tabulada y el criterio del proyecto. APTO sigue exigiendo las dos posiciones, geometría y eslingas compatibles y utilización hasta el 75%. No se completan radios/plumas por la estimación ni se confunde con una capacidad publicada. Una celda vacía también puede mostrar geometría sin inventar capacidad.
 
 Controles de masa: número y unidad en filas separadas, altura56px y fuente18–20px. En celular, los ajustes comunes de carga ocupan una sola columna y el selector de unidad de carga va debajo del número. Se conserva la conversión automática tn/kg.
+
+## Criterio conservador del proyecto - v4.4.0
+
+Los 50 ejemplos actualizados coinciden con el motor y con el formulario. Casos 16 y 50 pasan de sin capacidad verificable a capacidad del vecino superior (4,2 tn y 55,7 tn). Regla y alcance en `docs/project-conservative-criterion.md`; resultados actualizados en `docs/project-conservative-50-results.json`. Los ensayos recorren además cada celda exacta y cada radio medio en las 27 configuraciones, incluyendo las subidas locales de capacidad, vacíos y límites de ángulo. Los textos de selección dicen configuración de eslingado.

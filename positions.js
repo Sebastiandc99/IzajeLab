@@ -1,6 +1,6 @@
 import {number,geometry,rad} from './engine.js';
 import {solveAutomatic} from './planning.js';
-const minimumAngle=(cfg,r)=>Math.max(cfg.minAngle||0,...r.usedBooms.map(L=>cfg.minAngles?.[cfg.booms.indexOf(L)]||0));
+const minimumAngle=(cfg,r)=>Math.max(cfg.minAngle||0,...(r.geometryReferenceBooms||r.usedBooms).map(L=>cfg.minAngles?.[cfg.booms.indexOf(L)]||0));
 const has=v=>v!==''&&v!==null&&v!==undefined;
 
 // Geometría rígida aproximada. θ se mide desde la horizontal; no es β del lingado.

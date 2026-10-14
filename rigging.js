@@ -17,7 +17,7 @@ export function riggingLayout(id,beta=45){
 }
 export function riggingSVG(id,beta=45,{thumbnail=false,material='flat',cargoHeight=65}={}){
  const {choice,parallel,one,b,cx,hy,v,dx,ax,bx,y,loadW,left,right}=riggingLayout(id,beta);
- if(!choice)return '<text x="350" y="210" text-anchor="middle" font-size="24" fill="#69806a">Elegí un dibujo para ver el lingado.</text>';
+ if(!choice)return '<text x="350" y="210" text-anchor="middle" font-size="24" fill="#69806a">Elegí la configuración de eslingado.</text>';
  if(choice.angle&&!Number.isFinite(Number(beta)))return '<text x="350" y="220" text-anchor="middle" font-size="25" fill="#a34b36">Revisá el ángulo</text>';
  const bottom=y+cargoHeight;
  const strap=material==='chain'?'#ad6137':'#e76643',stroke=thumbnail?11:8;
