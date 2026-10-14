@@ -84,7 +84,7 @@ export function betaFromInput(p){
  }return number(beta,'β respecto de vertical',0,60);
 }
 export function slingCheck(p){
- const load=number(p.loadKg,'carga sobre eslingas',0.001)+number(p.belowKg,'peso bajo eslingas'),wll=number(p.wllKg,'WLL vertical por eslinga/ramal',0.001);
+ const load=number(p.loadKg,'carga sobre eslingas',0.001)+number(p.belowKg,'peso bajo eslingas');
  const type=p.type,mode=p.hitch;
  if(!['flat','round','chain','wire'].includes(type))throw Error('Tipo de eslinga no válido.');
  if(!['straight','choke','basket','legs2','legs2choke','legs3','legs4','asym2'].includes(mode))throw Error('Configuración no válida.');
@@ -93,6 +93,7 @@ export function slingCheck(p){
  const assembly=number(p.assemblyWll,'WLL certificado para configuración y ángulo',0.001);
  return {load,beta,assemblyCapacity:assembly,percent:load/assembly*100,pass:load<=assembly,certifiedOnly:true,notes:['Cable de acero: se usa el WLL del conjunto certificado para este ángulo/amarre; no se aplican factores textiles.']};
  }
+ const wll=number(p.wllKg,'capacidad de etiqueta vertical por eslinga/ramal',0.001);
  if(type==='chain'&&mode==='basket')throw Error('Cesta de cadena: requiere la tabla del conjunto específico; no se usa factor de cesta textil.');
  let beta=['straight','choke'].includes(mode)?0:betaFromInput(p),n=mode==='legs3'?3:mode==='legs4'?(p.equalized?3:2):mode==='straight'||mode==='choke'?1:2;
  const choke=['choke','legs2choke'].includes(mode)?0.8:1;let bandFactor=n===1?1:n===3?(beta<=45?2.1:1.5):(mode==='basket'&&beta<=7?2:beta<=45?1.4:1);

@@ -1,4 +1,4 @@
-# IzajeLab · v4.2.3
+# IzajeLab · v4.3.0
 
 Aplicación estática en español para calcular utilización de grúa y verificar lingado en dos posiciones. GitHub Pages: https://sebastiandc99.github.io/IzajeLab/.
 
@@ -18,13 +18,13 @@ Sólo se habilitan configuraciones representables por pluma principal recta. No 
 
 SRC1300T admite siguiente radio/pluma mayor dentro del mismo patrón según p.29 nota 4. SRC900C y SCC4500A conservan medidas exactas al no disponer de una regla cotejada para intermedios. Las estimaciones matemáticas pueden mostrarse como referencia, con el valor tabulado fuente, y nunca producen APTO.
 
-## Selección de pluma · v4.2.3
+## Selección de pluma · v4.3.0
 
 La lista de plumas de las telescópicas reúne todas las longitudes tabuladas para los mismos estabilizadores, contrapeso, base de tabla y sector. Al ingresar una longitud exacta que necesita un único patrón distinto, se ajusta ese patrón y se muestran sus porcentajes; se borra la confirmación de unidad. Si hay varios patrones compatibles y el activo no sirve, se exige elegir, sin tomar el de mayor capacidad. Las dos posiciones deben estar cubiertas por el patrón elegido; un cambio de patrón entre extremos requiere replantear la configuración. H/HJ de la SCC permanecen montajes separados. Los intermedios siguen la política del patrón activo.
 
 Caso cotejado SRC900C: R22/L47, estabilizadores 100%, contrapeso 9,5 tn, TELE1–4 100%, PDF6 / impresa11, columna21: capacidad 5,3 tn. Al 75%, 3,975 tn de peso suspendido antes de otras deducciones. No se modificaron capacidades ni reglas de interpolación. Las pruebas recorren el acceso a las 141 columnas y conservan el cotejo de las 2267 capacidades.
 
-## Auditoría de funcionamiento · v4.2.3
+## Auditoría de funcionamiento · v4.3.0
 
 Se corrigieron pesos de accesorios bajo eslingas omitidos en la grúa, límites del ángulo manual, radio mínimo del sitio, rechazo de la celda superior válida en SRC1300T, validación angular del cable certificado e importaciones con configuración/unidad/tipos inválidos. No se cambiaron capacidades del catálogo. Ver [comparación manual y pruebas](docs/audit-2026-10-13.md).
 
@@ -50,3 +50,17 @@ Sin dependencias para el sitio. `npm run check` y `npm test`. `python build_port
 El service worker conserva una copia offline y cambia de caché por versión. Un archivo abierto como `file:` no registra service worker.
 
 La SCC4500A conserva una única longitud de pluma de celosía para ambos extremos: si las búsquedas independientes difieren, se busca la menor longitud común compatible. Longitudes manuales distintas o ausencia de solución común bloquean APTO con una razón explícita.
+
+
+## Auditoría independiente de 50 ejemplos - v4.3.0
+
+Capacidades transcritas visualmente de los PDF, con cuentas independientes en toneladas usando Decimal: 17 casos SRC900C, 17 SRC1300T y 16 SCC4500A. Incluye 44 resultados numéricos y 6 casos sin capacidad verificable. No se modificaron las 2267 capacidades ni las 141 columnas del catálogo. Cada ejemplo se compara con el motor y recorre también el formulario en toneladas.
+
+- Oráculos: `tests/fixtures/manual-50.json`.
+- Comparación: `node tools/compare-manual-50.mjs`.
+- Cuentas y condiciones: `docs/manual-50-audit.md`.
+- Resultados completos: `docs/manual-50-results.json`.
+
+Toneladas primero en carga, gancho, aparejos, accesorios, deducciones y capacidades de eslingas; kilogramo sigue disponible con conversión automática. La pantalla de eslingas comienza con su peso propio, separado de la capacidad de etiqueta obligatoria. Peso propio vacío = 0; carga, capacidad individual y capacidad certificada no vienen precargadas. Los análisis anteriores sin campos de unidad nuevos se interpretan como kg y se recalculan.
+
+Cable de acero certificado: exige la capacidad del conjunto para el amarre y ángulo elegido; no exige la capacidad individual oculta que esa fórmula no utiliza. Ángulo y capacidad del conjunto se siguen validando. Selectores, criterios, nombres de materiales e informe se muestran en español; se conservan códigos de modelo, montaje, secciones y símbolos técnicos.
