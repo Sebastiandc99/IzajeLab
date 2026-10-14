@@ -16,7 +16,7 @@ Se preservan 141 columnas fuente y 2267 capacidades; toneladas convertidas a kg,
 
 Sólo se habilitan configuraciones representables por pluma principal recta. No se habilitan plumines, jib abatible, superlift, pick & carry ni tablas sobre neumáticos. SRC1300T pp.33–34 imprime `Unit: kg` con números decimales de interpretación ambigua; esas páginas no se convierten ni habilitan. Los PDF completos contienen más configuraciones que las implementadas.
 
-Desde v4.4.0, las tres grúas aplican el criterio conservador del proyecto: exige referencia superior válida y toma la menor capacidad de los vecinos disponibles dentro de la configuración seleccionada. Conserva R/L reales y bloquea fuera de rango o referencia superior vacía. Esta elección del proyecto no se presenta como autorización del fabricante. Las estimaciones matemáticas pueden mostrarse como referencia, con el valor tabulado fuente, y nunca producen APTO.
+Desde v4.4.0, las tres grúas aplican el criterio conservador del proyecto: para radios intermedios exige referencia superior válida y toma la menor capacidad de los vecinos disponibles dentro de la configuración seleccionada. Desde v4.4.3, la pluma admite solo longitudes tabuladas. Conserva R/L reales y bloquea fuera de rango o referencia superior vacía. Esta elección del proyecto no se presenta como autorización del fabricante. Las estimaciones matemáticas pueden mostrarse como referencia, con el valor tabulado fuente, y nunca producen APTO.
 
 ## Selección de pluma · v4.3.0
 
@@ -87,3 +87,11 @@ Los dos croquis tienen más espacio vertical; el encuadre de la grúa reduce má
 ## Croquis ampliados nuevamente - v4.4.2
 
 Se amplía nuevamente el encuadre de las dos posiciones, reduciendo el ancho vacío habitual de 740 a 620 unidades de dibujo, con crecimiento automático para no cortar las cotas, la carga ni los avisos. El eslingado también tiene un encuadre más cercano que contempla la perspectiva de 3 y 4 ramales. Aumenta el espacio vertical en celular y escritorio.
+
+## Longitudes de pluma exclusivamente tabuladas - v4.4.3
+
+Las dos posiciones muestran solo el desplegable de longitudes tabuladas; se elimina la entrada numérica libre. La propuesta automática también debe pertenecer a la tabla. El radio sigue admitiendo valores intermedios y aplica la menor capacidad entre los radios vecinos con referencia superior válida. Los patrones de extensión y H/HJ siguen separados. Una longitud calculada desde radio/ángulo que no coincide con la tabla no habilita capacidad; se solicita elegir una longitud tabulada.
+
+Antes de abrir un análisis se verifica que sus plumas pertenezcan al catálogo actual y al montaje físico correspondiente. Una longitud anterior fuera de tabla se rechaza con un mensaje y conserva el análisis que estaba abierto. El selector puede volver a quedar vacío para proponer una longitud desde la tabla. Los campos internos boom/boom2 se conservan ocultos para mantener el formato de guardado y enlazar el selector con los cálculos.
+
+289 pruebas aprobadas. Los 50 ejemplos siguen coincidiendo: los ejemplos 28 y 29 eligen explícitamente las columnas de 30,2 m y 25,9 m que antes se usaban como referencia para longitudes libres de 29 m y 25,5 m. Las capacidades PDF permanecen intactas.

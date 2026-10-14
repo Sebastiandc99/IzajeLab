@@ -30,6 +30,7 @@ export function tableAxis(values,value,name,policy='exact'){
  if(exact>=0)return {bounds:[exact],used:[exact],derived:false};
  const hi=values.findIndex(x=>x>v);
  if(hi<=0)throw Error(`${name}: fuera del rango tabulado (${values[0]} a ${values.at(-1)} m). No hay capacidad verificable fuera de tabla.`);
+ if(policy==='exact'&&name==='pluma')throw Error(`Pluma: ${v.toLocaleString('es-AR')} m no está tabulado. Elegí una longitud de la lista (${values[hi-1].toLocaleString('es-AR')} o ${values[hi].toLocaleString('es-AR')} m).`);
  if(policy==='exact')throw Error(`${name}: ${v.toLocaleString('es-AR')} m no está tabulado; las medidas vecinas son ${values[hi-1].toLocaleString('es-AR')} y ${values[hi].toLocaleString('es-AR')} m. El manual cargado no habilita medidas intermedias para verificar la capacidad. La geometría se calcula por separado.`);
  if(!['next-larger','bracket-min','project-conservative'].includes(policy))throw Error('Criterio de tabla no reconocido.');
  return {bounds:[hi-1,hi],used:policy==='bracket-min'?[hi-1,hi]:[hi],derived:true};
@@ -52,7 +53,7 @@ export function lookup(cfg,radius,boom){
  const capacity=Math.min(...cells.map(c=>c.capacity)),governing=cells.filter(c=>c.capacity===capacity).sort((a,b)=>b.radius-a.radius||b.boom-a.boom)[0];
  return {capacity,usedRadii:project?[governing.radius]:ra.used.map(i=>cfg.rows[i][0]),usedBooms:project?[governing.boom]:ba.used.map(j=>cfg.booms[j]),geometryReferenceBooms:ba.bounds.map(j=>cfg.booms[j]),boom:L,derived,cells,bounds,policyOrigin:project?'project':'table',
   policySource:derived?cfg.intermediateSource||'Criterio conservador de radios ingresado con la tabla.':'',
-  method:!derived?'Celda exacta':project?'Menor capacidad entre vecinos; referencia superior válida (criterio conservador del proyecto, sin interpolar)':hasMin?'Mínimo de celdas contiguas válidas (criterio conservador del manual)':'Siguiente radio/pluma mayor según manual (sin interpolación lineal)'};
+  method:!derived?'Celda exacta':project?(cfg.boomPolicy==='exact'?'Menor capacidad entre radios vecinos; referencia superior válida (criterio conservador del proyecto, sin interpolar)':'Menor capacidad entre vecinos; referencia superior válida (criterio conservador del proyecto, sin interpolar)'):hasMin?'Mínimo de celdas contiguas válidas (criterio conservador del manual)':'Siguiente radio/pluma mayor según manual (sin interpolación lineal)'};
 }
 export function grossMass(p){return number(p.loadKg,'peso de carga',0.001)+number(p.hookKg,'gancho')+number(p.rigKg,'aparejos')+number(p.otherKg,'otros suspendidos')+number(p.belowKg??0,'accesorios debajo de eslingas');}
 export function craneCheck(cfg,p){
