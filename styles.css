@@ -103,3 +103,6 @@ header{max-width:1200px;padding:18px 22px}main{max-width:1200px;padding:18px 22p
  .print-rigging-sketch svg{display:block;width:100%;height:225px;margin:0}
  .print-rigging-sketch figcaption{text-align:center;font-size:11px;color:#405c4c;margin-top:6px}
 }
+
+#telescopicChoices{margin:18px 0}#extensionLegend{font-weight:650;font-size:13px;overflow-wrap:anywhere}
+#extensionConfig{font-size:15px}.flow-heading{margin:20px 0 14px}

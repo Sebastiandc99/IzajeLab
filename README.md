@@ -117,3 +117,13 @@ Los archivos nuevos conservan la selección explícita en inputs.outriggerConfig
 “Verificación del lingado” incluye el croquis vectorial de la configuración seleccionada, con el material y ángulo usados por la verificación. Se conserva el encuadre del dibujo en pantalla, se agrega su nombre y ángulo al pie y se mantiene el bloque completo al imprimir.
 
 294 pruebas aprobadas. El ensayo de impresión verifica que el dibujo de 4 ramales con β30° coincide con el de pantalla. Se revisó visualmente un PDF de prueba de dos páginas, con el bloque y la figura completos y legibles.
+
+## Selección dependiente de las columnas del PDF - v4.5.0
+
+En Posiciones, el orden es estabilizadores → longitudes tabuladas de ambas posiciones → combinación de secciones telescópicas. Sin elegir estabilizadores no se habilitan las longitudes. La lista final se forma con las columnas disponibles para las longitudes seleccionadas dentro del mismo apoyo, sector y contrapeso; no se inventan porcentajes ni se mezclan columnas para crear una capacidad.
+
+Para una misma longitud se muestran todos los porcentajes de TELE1–4 (SRC900C) o secciones 2–6 (SRC1300T). Por ejemplo, SRC900C a 16,55 m ofrece 0/17/17/17% y 50/0/0/0%; a 20,90 m ofrece 0/33/33/33%, 50/17/17/17% y 100/0/0/0%. Si las posiciones tienen longitudes diferentes, cada opción identifica los porcentajes de P1/P2 y se muestra el orden de las secciones, con detalles de modo, enhebrado y página. Solo se conservan patrones compatibles con ambas posiciones.
+
+Cambiar los apoyos borra longitudes que no existan en la nueva familia, sin redondearlas. SCC4500A ofrece primero el montaje H/HJ y luego sus longitudes de celosía; no muestra porcentajes telescópicos. Se conservan las longitudes propuestas cuando el usuario deja ese dato vacío, así como los controles de estabilidad, ángulo, utilización y lingado existentes.
+
+300 pruebas aprobadas, con recorridos de las 141 columnas y casos concretos de ambos PDF telescópicos, cambios de apoyo, compatibilidad de las dos posiciones y H/HJ. Los 50 ejemplos independientes mantienen coincidencia; las 2267 capacidades fuente no se modificaron.
