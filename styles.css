@@ -84,3 +84,10 @@ header{max-width:1200px;padding:18px 22px}main{max-width:1200px;padding:18px 22p
  #results #craneDiagram,#results #craneDiagram2{min-height:420px}
  .rigging-workspace .sketch>svg{min-height:350px}
 }
+
+/* Configuración pendiente: aviso ámbar, sin atribuir un error a las posiciones. */
+.configuration-pending{background:#fff5d9;border-color:#c78b1d;color:#735012}
+.mosaic-tile.configuration-pending,.mosaic-tile.configuration-pending:hover{background:#fff5d9;border-color:#c78b1d}
+.mosaic-tile.configuration-pending .tile-label,.mosaic-tile.configuration-pending small{color:#735012}
+.configuration-notice{padding:12px;border:1px solid #d3a442;border-radius:9px;background:#fff5d9;color:#735012;font-size:14px;line-height:1.6}
+.overview-checks .check-pending{background:#fff5d9;color:#735012;border:1px solid #d3a442}

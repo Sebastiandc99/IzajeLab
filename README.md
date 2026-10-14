@@ -95,3 +95,11 @@ Las dos posiciones muestran solo el desplegable de longitudes tabuladas; se elim
 Antes de abrir un análisis se verifica que sus plumas pertenezcan al catálogo actual y al montaje físico correspondiente. Una longitud anterior fuera de tabla se rechaza con un mensaje y conserva el análisis que estaba abierto. El selector puede volver a quedar vacío para proponer una longitud desde la tabla. Los campos internos boom/boom2 se conservan ocultos para mantener el formato de guardado y enlazar el selector con los cálculos.
 
 289 pruebas aprobadas. Los 50 ejemplos siguen coincidiendo: los ejemplos 28 y 29 eligen explícitamente las columnas de 30,2 m y 25,9 m que antes se usaban como referencia para longitudes libres de 29 m y 25,5 m. Las capacidades PDF permanecen intactas.
+
+## Configuración pendiente y extensión de estabilizadores - v4.4.4
+
+La pantalla de posiciones distingue “Extensión de estabilizadores” de “Extensión de secciones de la pluma”. El primer selector cambia la familia de tablas de apoyo (100%, 50% o retraídos), conservando el patrón T1 cuando está disponible; el segundo muestra los porcentajes de las secciones telescópicas. Los montajes H/HJ de la grúa sobre orugas conservan su selección independiente y no ofrecen estabilizadores.
+
+Si las longitudes requieren elegir entre varios patrones compatibles, se marca en ámbar la configuración y el selector pendiente, con un mensaje explícito. Las posiciones conservan sus datos y quedan pendientes de verificación sin el rojo de falla. El plan y su análisis guardado indican PENDIENTE y no habilitan APTO. Al completar ese selector tras una verificación pendiente, se recalculan ambas posiciones automáticamente. El rojo continúa indicando incumplimientos o incompatibilidades reales.
+
+292 pruebas aprobadas; los 50 ejemplos independientes mantienen coincidencia. Se incluyen selección pendiente en SRC900C, conservación de radios/plumas, reanudación del cálculo, exceso real de utilización, cambio 100%→50%→retraídos y separación del montaje sobre orugas.

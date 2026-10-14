@@ -66,7 +66,7 @@ export function assessLift(positions,slingResult){
  const cranePass=verified&&positions.every(p=>p.result.pass&&p.result.percent<=75+1e-9);
  const failedSling=!!slingResult&&!slingPass;
  const failedCrane=positions.some(p=>p.result&&!p.result.pass);
- const status=failedSling||failedCrane?'NO APTO':cranePass&&slingPass?'APTO':positions.some(p=>p.error||p.estimate)?'SIN VERIFICAR':'PENDIENTE';
+ const status=failedSling||failedCrane?'NO APTO':cranePass&&slingPass?'APTO':positions.some(p=>p.patternMissing)?'PENDIENTE':positions.some(p=>p.error||p.estimate)?'SIN VERIFICAR':'PENDIENTE';
  const numeric=positions.filter(p=>p.result);
  const limiting=numeric.length?numeric.reduce((a,b)=>b.result.percent>a.result.percent?b:a):null;
  return {status,pass:cranePass&&slingPass,cranePass,slingPass,verified,limitingPosition:limiting?.index??null};
