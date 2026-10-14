@@ -111,3 +111,9 @@ La extensión de estabilizadores inicia sin selección y se vuelve a vaciar al c
 Los archivos nuevos conservan la selección explícita en inputs.outriggerConfig y la cotejan con la familia de la tabla. Los archivos anteriores que no incluyen ese campo requieren seleccionar estabilizadores antes de recalcular; no se infiere la elección desde la configuración que guardaron.
 
 294 pruebas aprobadas, incluidos arranque vacío, cambios de modelo/patrón, marcado específico del dato faltante, 0% explícito, borrado de selección, guardado/reapertura y rechazo de familias de apoyo incompatibles.
+
+## Dibujo del lingado en el informe PDF - v4.4.6
+
+“Verificación del lingado” incluye el croquis vectorial de la configuración seleccionada, con el material y ángulo usados por la verificación. Se conserva el encuadre del dibujo en pantalla, se agrega su nombre y ángulo al pie y se mantiene el bloque completo al imprimir.
+
+294 pruebas aprobadas. El ensayo de impresión verifica que el dibujo de 4 ramales con β30° coincide con el de pantalla. Se revisó visualmente un PDF de prueba de dos páginas, con el bloque y la figura completos y legibles.

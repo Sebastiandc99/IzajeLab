@@ -95,3 +95,11 @@ header{max-width:1200px;padding:18px 22px}main{max-width:1200px;padding:18px 22p
 #outriggerLabel.verification-failed{padding:12px;border:1px solid var(--fail-border);border-radius:9px}
 #outriggerConfig.verification-failed{border:2px solid var(--fail-border);color:var(--fail-ink)}
 .support-error{color:var(--fail-ink);font-size:14px;font-weight:700;line-height:1.5}
+
+@media print{
+ .print-rigging{break-inside:avoid;page-break-inside:avoid;margin:14px 0}
+ .print-rigging h2{margin-bottom:8px}
+ .print-rigging-sketch{width:420px;max-width:100%;margin:8px auto 0;break-inside:avoid;page-break-inside:avoid}
+ .print-rigging-sketch svg{display:block;width:100%;height:225px;margin:0}
+ .print-rigging-sketch figcaption{text-align:center;font-size:11px;color:#405c4c;margin-top:6px}
+}
