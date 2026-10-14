@@ -91,3 +91,7 @@ header{max-width:1200px;padding:18px 22px}main{max-width:1200px;padding:18px 22p
 .mosaic-tile.configuration-pending .tile-label,.mosaic-tile.configuration-pending small{color:#735012}
 .configuration-notice{padding:12px;border:1px solid #d3a442;border-radius:9px;background:#fff5d9;color:#735012;font-size:14px;line-height:1.6}
 .overview-checks .check-pending{background:#fff5d9;color:#735012;border:1px solid #d3a442}
+
+#outriggerLabel.verification-failed{padding:12px;border:1px solid var(--fail-border);border-radius:9px}
+#outriggerConfig.verification-failed{border:2px solid var(--fail-border);color:var(--fail-ink)}
+.support-error{color:var(--fail-ink);font-size:14px;font-weight:700;line-height:1.5}

@@ -103,3 +103,11 @@ La pantalla de posiciones distingue “Extensión de estabilizadores” de “Ex
 Si las longitudes requieren elegir entre varios patrones compatibles, se marca en ámbar la configuración y el selector pendiente, con un mensaje explícito. Las posiciones conservan sus datos y quedan pendientes de verificación sin el rojo de falla. El plan y su análisis guardado indican PENDIENTE y no habilitan APTO. Al completar ese selector tras una verificación pendiente, se recalculan ambas posiciones automáticamente. El rojo continúa indicando incumplimientos o incompatibilidades reales.
 
 292 pruebas aprobadas; los 50 ejemplos independientes mantienen coincidencia. Se incluyen selección pendiente en SRC900C, conservación de radios/plumas, reanudación del cálculo, exceso real de utilización, cambio 100%→50%→retraídos y separación del montaje sobre orugas.
+
+## Estabilizadores obligatorios sin preselección - v4.4.5
+
+La extensión de estabilizadores inicia sin selección y se vuelve a vaciar al cambiar de modelo. Elegir o ajustar un patrón de pluma o la configuración general no completa este dato automáticamente. Antes de cualquier verificación de grúa, impresión o guardado se exige una selección expresa. Si falta, se resalta en rojo el selector y su etiqueta, con el mensaje “Falta seleccionar la extensión de estabilizadores”; las posiciones se conservan sin atribuirles una falla de capacidad. Al corregir este dato después del aviso se reanuda la verificación. El 0% es una elección válida únicamente cuando el usuario lo selecciona. Los montajes sobre orugas no piden este dato.
+
+Los archivos nuevos conservan la selección explícita en inputs.outriggerConfig y la cotejan con la familia de la tabla. Los archivos anteriores que no incluyen ese campo requieren seleccionar estabilizadores antes de recalcular; no se infiere la elección desde la configuración que guardaron.
+
+294 pruebas aprobadas, incluidos arranque vacío, cambios de modelo/patrón, marcado específico del dato faltante, 0% explícito, borrado de selección, guardado/reapertura y rechazo de familias de apoyo incompatibles.
