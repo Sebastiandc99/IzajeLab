@@ -75,3 +75,11 @@ Controles de masa: número y unidad en filas separadas, altura56px y fuente18–
 ## Criterio conservador del proyecto - v4.4.0
 
 Los 50 ejemplos actualizados coinciden con el motor y con el formulario. Casos 16 y 50 pasan de sin capacidad verificable a capacidad del vecino superior (4,2 tn y 55,7 tn). Regla y alcance en `docs/project-conservative-criterion.md`; resultados actualizados en `docs/project-conservative-50-results.json`. Los ensayos recorren además cada celda exacta y cada radio medio en las 27 configuraciones, incluyendo las subidas locales de capacidad, vacíos y límites de ángulo. Los textos de selección dicen configuración de eslingado.
+
+## Croquis y cambio de longitud tabulada - v4.4.1
+
+Las dos posiciones usan un desplegable nativo con todas las longitudes tabuladas del montaje disponible, separado del número editable. La lista no se filtra por la longitud ya ingresada y permite cambiarla repetidamente. Los valores escritos, calculados e importados se sincronizan con el selector. Cambiar una longitud conserva los radios ingresados, invalida los resultados y elimina ángulos/alturas automáticos para recalcularlos. Se conservan los controles de compatibilidad del patrón y de montaje H/HJ.
+
+Los dos croquis tienen más espacio vertical; el encuadre de la grúa reduce márgenes vacíos para ampliar la figura y sus cotas, conservando la escala de R/L y extendiéndose cuando las dimensiones de carga o los avisos lo requieren. El croquis de eslingado también tiene más espacio.
+
+286 pruebas aprobadas, incluidos cambios sucesivos mediante ambos selectores, conservación del radio y renovación de geometría, sincronización manual/automática y cambios de modelo/montaje. Los 50 ejemplos independientes siguen coincidiendo.
