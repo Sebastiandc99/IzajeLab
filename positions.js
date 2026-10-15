@@ -35,7 +35,9 @@ export function previewPositionGeometry(known,p){
 
 export function solvePosition(cfg,p,known){
  if(!['radius','boom','angle'].some(key=>has(known[key]))){const e=Error((has(known.hookHeight)?'La altura sola no define esta posición. ':'')+'Falta completar: ingresá radio R, pluma L o ángulo θ (al menos uno).');e.code='MISSING_POSITION_DATA';throw e;}
- const resolved=resolvePosition(known,p);let solved;
+ const sourceAngle=cfg.chartAngles?.[String(known.radius)]?.[String(known.boom)],sourceMatch=has(known.angle)&&Number.isFinite(sourceAngle)&&Math.abs(Number(known.angle)-sourceAngle)<=.5;
+ if(cfg.geometryUnsupportedBooms?.includes(Number(known.boom))&&(!has(known.radius)||!has(known.boom)))throw Error('Esta extensión requiere radio y longitud de tabla explícitos; el montaje no está documentado para obtenerlos por geometría.');
+ const resolved=resolvePosition(sourceMatch?{...known,angle:''}:known,p);if(sourceMatch){resolved.angle=Number(known.angle);resolved.auto.angle=false;}let solved;
  if(resolved.angle!==null&&resolved.radius===''&&resolved.boom===''){
   const options=[];let reason;
   for(const boom of cfg.booms){try{
@@ -50,7 +52,7 @@ export function solvePosition(cfg,p,known){
  }else solved=solveAutomatic(cfg,p,{radius:resolved.radius,boom:resolved.boom,hookHeight:known.hookHeight});
  const fixed=resolved.radius!==''&&resolved.boom!=='';
  const updated=solved.options.map(r=>{
-  const angle=resolved.angle??r.geometry?.angle??null,minAngle=minimumAngle(cfg,r);
+  const angle=resolved.angle??r.geometry?.angle??r.chartAngle??null,minAngle=minimumAngle(cfg,r);
   const anglePass=Number.isFinite(angle)&&angle<=cfg.maxAngle+1e-8&&angle>=minAngle-1e-8;
   const geometryPass=anglePass&&!!r.geometry&&r.geometry.angle<=cfg.maxAngle+1e-8&&r.geometry.angle>=minAngle-1e-8&&(!r.hasRequiredHeight||r.geometry.reach);
   return {...r,geometryPass,anglePass,minAngle,maxAngle:cfg.maxAngle,angle,angleApproximate:resolved.angle===null,pass:r.pass&&geometryPass};
@@ -62,11 +64,11 @@ export function solvePosition(cfg,p,known){
 
 export function assessLift(positions,slingResult){
  const slingPass=!!slingResult?.pass;
- const verified=positions.length===2&&positions.every(p=>!!p.result&&!p.estimate&&!p.error);
+ const verified=positions.length===2&&positions.every(p=>!!p.result&&!p.estimate&&!p.error&&p.result.documentVerified!==false&&!p.result.geometryUnavailable);
  const cranePass=verified&&positions.every(p=>p.result.pass&&p.result.percent<=75+1e-9);
  const failedSling=!!slingResult&&!slingPass;
- const failedCrane=positions.some(p=>p.result&&!p.result.pass);
- const status=failedSling||failedCrane?'NO APTO':cranePass&&slingPass?'APTO':positions.some(p=>p.patternMissing)?'PENDIENTE':positions.some(p=>p.error||p.estimate)?'SIN VERIFICAR':'PENDIENTE';
+ const failedCrane=positions.some(p=>p.result&&!p.result.pass&&(!p.result.geometryUnavailable||p.result.capacityPass===false));
+ const status=failedSling||failedCrane?'NO APTO':cranePass&&slingPass?'APTO':positions.some(p=>p.patternMissing)?'PENDIENTE':positions.some(p=>p.error||p.estimate||p.result?.documentVerified===false||p.result?.geometryUnavailable)?'SIN VERIFICAR':'PENDIENTE';
  const numeric=positions.filter(p=>p.result);
  const limiting=numeric.length?numeric.reduce((a,b)=>b.result.percent>a.result.percent?b:a):null;
  return {status,pass:cranePass&&slingPass,cranePass,slingPass,verified,limitingPosition:limiting?.index??null};

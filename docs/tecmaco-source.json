@@ -1,0 +1,658 @@
+{
+  "file": "1000543244.jpg",
+  "unit": "kg",
+  "radiusUnit": "m",
+  "headerRightUnit": "ft (rótulo de la foto; se usa el eje izquierdo en m)",
+  "notice": "Los gráficos son solo para referencia y no deberán usarse para la operación.",
+  "columns": [
+    {
+      "boom": 5.61,
+      "support": "maximo",
+      "additionalExtension": false,
+      "rows": [
+        {
+          "radius": 1.52,
+          "angle": 75,
+          "capacityKg": 16344
+        },
+        {
+          "radius": 2.44,
+          "angle": 64,
+          "capacityKg": 10442
+        },
+        {
+          "radius": 3.05,
+          "angle": 57,
+          "capacityKg": 8785
+        },
+        {
+          "radius": 3.66,
+          "angle": 48,
+          "capacityKg": 7514
+        },
+        {
+          "radius": 4.27,
+          "angle": 38,
+          "capacityKg": 6606
+        },
+        {
+          "radius": 4.88,
+          "angle": 24,
+          "capacityKg": 5902
+        },
+        {
+          "radius": 5.15,
+          "angle": 0,
+          "capacityKg": 3814
+        }
+      ]
+    },
+    {
+      "boom": 5.61,
+      "support": "medio",
+      "additionalExtension": false,
+      "rows": [
+        {
+          "radius": 1.52,
+          "angle": 75,
+          "capacityKg": 13620
+        },
+        {
+          "radius": 2.44,
+          "angle": 64,
+          "capacityKg": 10442
+        },
+        {
+          "radius": 3.05,
+          "angle": 57,
+          "capacityKg": 8785
+        },
+        {
+          "radius": 3.66,
+          "angle": 48,
+          "capacityKg": 7514
+        },
+        {
+          "radius": 4.27,
+          "angle": 38,
+          "capacityKg": 6606
+        },
+        {
+          "radius": 4.88,
+          "angle": 24,
+          "capacityKg": 5766
+        },
+        {
+          "radius": 5.15,
+          "angle": 0,
+          "capacityKg": 3814
+        }
+      ]
+    },
+    {
+      "boom": 5.61,
+      "support": "minimo",
+      "additionalExtension": false,
+      "rows": [
+        {
+          "radius": 1.52,
+          "angle": 75,
+          "capacityKg": 9988
+        },
+        {
+          "radius": 2.44,
+          "angle": 64,
+          "capacityKg": 6901
+        },
+        {
+          "radius": 3.05,
+          "angle": 57,
+          "capacityKg": 4585
+        },
+        {
+          "radius": 3.66,
+          "angle": 48,
+          "capacityKg": 3360
+        },
+        {
+          "radius": 4.27,
+          "angle": 38,
+          "capacityKg": 2565
+        },
+        {
+          "radius": 4.88,
+          "angle": 24,
+          "capacityKg": 2043
+        },
+        {
+          "radius": 5.15,
+          "angle": 0,
+          "capacityKg": 1839
+        }
+      ]
+    },
+    {
+      "boom": 9.51,
+      "support": "maximo",
+      "additionalExtension": false,
+      "rows": [
+        {
+          "radius": 2.44,
+          "angle": 76,
+          "capacityKg": 7922
+        },
+        {
+          "radius": 3.05,
+          "angle": 73,
+          "capacityKg": 7922
+        },
+        {
+          "radius": 3.66,
+          "angle": 69,
+          "capacityKg": 7082
+        },
+        {
+          "radius": 4.27,
+          "angle": 64,
+          "capacityKg": 6197
+        },
+        {
+          "radius": 4.88,
+          "angle": 60,
+          "capacityKg": 5584
+        },
+        {
+          "radius": 6.1,
+          "angle": 51,
+          "capacityKg": 4540
+        },
+        {
+          "radius": 7.62,
+          "angle": 36,
+          "capacityKg": 3677
+        },
+        {
+          "radius": 9.05,
+          "angle": 0,
+          "capacityKg": 1793
+        }
+      ]
+    },
+    {
+      "boom": 9.51,
+      "support": "medio",
+      "additionalExtension": false,
+      "rows": [
+        {
+          "radius": 2.44,
+          "angle": 76,
+          "capacityKg": 7922
+        },
+        {
+          "radius": 3.05,
+          "angle": 73,
+          "capacityKg": 7922
+        },
+        {
+          "radius": 3.66,
+          "angle": 69,
+          "capacityKg": 7082
+        },
+        {
+          "radius": 4.27,
+          "angle": 64,
+          "capacityKg": 6197
+        },
+        {
+          "radius": 4.88,
+          "angle": 60,
+          "capacityKg": 5266
+        },
+        {
+          "radius": 6.1,
+          "angle": 51,
+          "capacityKg": 3496
+        },
+        {
+          "radius": 7.62,
+          "angle": 36,
+          "capacityKg": 2247
+        },
+        {
+          "radius": 9.05,
+          "angle": 0,
+          "capacityKg": 1544
+        }
+      ]
+    },
+    {
+      "boom": 9.51,
+      "support": "minimo",
+      "additionalExtension": false,
+      "rows": [
+        {
+          "radius": 2.44,
+          "angle": 76,
+          "capacityKg": 5993
+        },
+        {
+          "radius": 3.05,
+          "angle": 73,
+          "capacityKg": 3973
+        },
+        {
+          "radius": 3.66,
+          "angle": 69,
+          "capacityKg": 2883
+        },
+        {
+          "radius": 4.27,
+          "angle": 64,
+          "capacityKg": 2179
+        },
+        {
+          "radius": 4.88,
+          "angle": 60,
+          "capacityKg": 1703
+        },
+        {
+          "radius": 6.1,
+          "angle": 51,
+          "capacityKg": 1067
+        },
+        {
+          "radius": 7.62,
+          "angle": 36,
+          "capacityKg": 590
+        },
+        {
+          "radius": 9.05,
+          "angle": 0,
+          "capacityKg": 272
+        }
+      ]
+    },
+    {
+      "boom": 13.4,
+      "support": "maximo",
+      "additionalExtension": false,
+      "rows": [
+        {
+          "radius": 3.05,
+          "angle": 79,
+          "capacityKg": 7922
+        },
+        {
+          "radius": 3.66,
+          "angle": 76,
+          "capacityKg": 6651
+        },
+        {
+          "radius": 4.27,
+          "angle": 73,
+          "capacityKg": 5789
+        },
+        {
+          "radius": 4.88,
+          "angle": 70,
+          "capacityKg": 5221
+        },
+        {
+          "radius": 6.1,
+          "angle": 65,
+          "capacityKg": 4268
+        },
+        {
+          "radius": 7.62,
+          "angle": 57,
+          "capacityKg": 3450
+        },
+        {
+          "radius": 9.14,
+          "angle": 48,
+          "capacityKg": 2832
+        },
+        {
+          "radius": 10.7,
+          "angle": 38,
+          "capacityKg": 2293
+        },
+        {
+          "radius": 12.2,
+          "angle": 23,
+          "capacityKg": 1725
+        },
+        {
+          "radius": 12.95,
+          "angle": 0,
+          "capacityKg": 840
+        }
+      ]
+    },
+    {
+      "boom": 13.4,
+      "support": "medio",
+      "additionalExtension": false,
+      "rows": [
+        {
+          "radius": 3.05,
+          "angle": 79,
+          "capacityKg": 7922
+        },
+        {
+          "radius": 3.66,
+          "angle": 76,
+          "capacityKg": 6651
+        },
+        {
+          "radius": 4.27,
+          "angle": 73,
+          "capacityKg": 5789
+        },
+        {
+          "radius": 4.88,
+          "angle": 70,
+          "capacityKg": 4994
+        },
+        {
+          "radius": 6.1,
+          "angle": 65,
+          "capacityKg": 3496
+        },
+        {
+          "radius": 7.62,
+          "angle": 57,
+          "capacityKg": 2247
+        },
+        {
+          "radius": 9.14,
+          "angle": 48,
+          "capacityKg": 1521
+        },
+        {
+          "radius": 10.7,
+          "angle": 38,
+          "capacityKg": 1090
+        },
+        {
+          "radius": 12.2,
+          "angle": 23,
+          "capacityKg": 749
+        },
+        {
+          "radius": 12.95,
+          "angle": 0,
+          "capacityKg": 590
+        }
+      ]
+    },
+    {
+      "boom": 17.3,
+      "support": "maximo",
+      "additionalExtension": false,
+      "rows": [
+        {
+          "radius": 3.66,
+          "angle": 80,
+          "capacityKg": 4109
+        },
+        {
+          "radius": 4.27,
+          "angle": 78,
+          "capacityKg": 4109
+        },
+        {
+          "radius": 4.88,
+          "angle": 76,
+          "capacityKg": 4109
+        },
+        {
+          "radius": 6.1,
+          "angle": 72,
+          "capacityKg": 3836
+        },
+        {
+          "radius": 7.62,
+          "angle": 66,
+          "capacityKg": 3133
+        },
+        {
+          "radius": 9.14,
+          "angle": 61,
+          "capacityKg": 2565
+        },
+        {
+          "radius": 10.7,
+          "angle": 54,
+          "capacityKg": 2179
+        },
+        {
+          "radius": 12.2,
+          "angle": 47,
+          "capacityKg": 1725
+        },
+        {
+          "radius": 13.7,
+          "angle": 39,
+          "capacityKg": 1544
+        },
+        {
+          "radius": 15.2,
+          "angle": 29,
+          "capacityKg": 1226
+        },
+        {
+          "radius": 15.93,
+          "angle": 0,
+          "capacityKg": 499
+        }
+      ]
+    },
+    {
+      "boom": 17.3,
+      "support": "medio",
+      "additionalExtension": false,
+      "rows": [
+        {
+          "radius": 3.66,
+          "angle": 80,
+          "capacityKg": 4109
+        },
+        {
+          "radius": 4.27,
+          "angle": 78,
+          "capacityKg": 4109
+        },
+        {
+          "radius": 4.88,
+          "angle": 76,
+          "capacityKg": 4109
+        },
+        {
+          "radius": 6.1,
+          "angle": 72,
+          "capacityKg": 3496
+        },
+        {
+          "radius": 7.62,
+          "angle": 66,
+          "capacityKg": 2247
+        },
+        {
+          "radius": 9.14,
+          "angle": 61,
+          "capacityKg": 1521
+        },
+        {
+          "radius": 10.7,
+          "angle": 54,
+          "capacityKg": 1090
+        },
+        {
+          "radius": 12.2,
+          "angle": 47,
+          "capacityKg": 749
+        },
+        {
+          "radius": 13.7,
+          "angle": 39,
+          "capacityKg": 522
+        },
+        {
+          "radius": 15.2,
+          "angle": 29,
+          "capacityKg": 409
+        },
+        {
+          "radius": 15.93,
+          "angle": 0,
+          "capacityKg": 318
+        }
+      ]
+    },
+    {
+      "boom": 21.2,
+      "support": "maximo",
+      "additionalExtension": false,
+      "rows": [
+        {
+          "radius": 4.88,
+          "angle": 80,
+          "capacityKg": 4109
+        },
+        {
+          "radius": 6.1,
+          "angle": 77,
+          "capacityKg": 3314
+        },
+        {
+          "radius": 7.62,
+          "angle": 72,
+          "capacityKg": 2724
+        },
+        {
+          "radius": 9.14,
+          "angle": 68,
+          "capacityKg": 2315
+        },
+        {
+          "radius": 10.7,
+          "angle": 63,
+          "capacityKg": 1952
+        },
+        {
+          "radius": 12.2,
+          "angle": 58,
+          "capacityKg": 1680
+        },
+        {
+          "radius": 13.7,
+          "angle": 53,
+          "capacityKg": 1430
+        },
+        {
+          "radius": 15.2,
+          "angle": 47,
+          "capacityKg": 1249
+        },
+        {
+          "radius": 16.8,
+          "angle": 41,
+          "capacityKg": 1044
+        },
+        {
+          "radius": 18.3,
+          "angle": 33,
+          "capacityKg": 908
+        },
+        {
+          "radius": 19.8,
+          "angle": 22,
+          "capacityKg": 726
+        },
+        {
+          "radius": 20.75,
+          "angle": 0,
+          "capacityKg": 272
+        }
+      ]
+    },
+    {
+      "boom": 33.5,
+      "support": "maximo",
+      "additionalExtension": true,
+      "rows": [
+        {
+          "radius": 6.1,
+          "angle": 79,
+          "capacityKg": 1907
+        },
+        {
+          "radius": 7.62,
+          "angle": 76,
+          "capacityKg": 1907
+        },
+        {
+          "radius": 9.14,
+          "angle": 73,
+          "capacityKg": 1907
+        },
+        {
+          "radius": 10.7,
+          "angle": 69,
+          "capacityKg": 1725
+        },
+        {
+          "radius": 12.2,
+          "angle": 65,
+          "capacityKg": 1498
+        },
+        {
+          "radius": 13.7,
+          "angle": 61,
+          "capacityKg": 1317
+        },
+        {
+          "radius": 15.2,
+          "angle": 57,
+          "capacityKg": 1135
+        },
+        {
+          "radius": 16.8,
+          "angle": 52,
+          "capacityKg": 976
+        },
+        {
+          "radius": 18.3,
+          "angle": 47,
+          "capacityKg": 863
+        },
+        {
+          "radius": 19.8,
+          "angle": 42,
+          "capacityKg": 726
+        },
+        {
+          "radius": 21.3,
+          "angle": 35,
+          "capacityKg": 613
+        },
+        {
+          "radius": 22.9,
+          "angle": 28,
+          "capacityKg": 545
+        },
+        {
+          "radius": 24.4,
+          "angle": 11,
+          "capacityKg": 386
+        },
+        {
+          "radius": 24.78,
+          "angle": 0,
+          "capacityKg": 159
+        }
+      ]
+    }
+  ]
+}

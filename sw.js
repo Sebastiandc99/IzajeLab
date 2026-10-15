@@ -1,5 +1,5 @@
-const CACHE='izajelab-v4.5.1';
-const ASSETS=['./','./index.html','./styles.css','./app.js','./engine.js','./field.js','./planning.js','./positions.js','./estimation.js','./rigging.js','./data.js','./logo-izangel.png','./icon.svg','./manifest.webmanifest'];
+const CACHE='izajelab-v4.6.0';
+const ASSETS=['./','./index.html','./styles.css','./app.js','./engine.js','./field.js','./planning.js','./positions.js','./estimation.js','./rigging.js','./data.js','./tecmaco.js','./tecmaco-tabla.jpg','./tecmaco-equipo.jpg','./logo-izangel.png','./icon.svg','./manifest.webmanifest'];
 self.addEventListener('message',e=>{if(e.data?.type==='ACTIVATE_UPDATE')self.skipWaiting();});
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS.map(url=>new Request(url,{cache:'reload'})))).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('izajelab-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});

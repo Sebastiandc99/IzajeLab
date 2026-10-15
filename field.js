@@ -17,15 +17,15 @@ export function sensorReading(samples,now,zero=0){
  const stable=s.length>=8&&s.at(-1).time-s[0].time>=750&&Math.max(...values)-Math.min(...values)<=1.5;
  return {theta,beta:90-theta,stable,fresh:true,count:s.length};
 }
-export function craneDrawing({radius,boom,pivotHeight=2.5,pivotOffset=0,maxBoom=34,maxRadius=28,hookHeight=0,unknownRadius=false,unknownBoom=false}){
+export function craneDrawing({radius,boom,pivotHeight=2.5,pivotOffset=0,maxBoom=34,maxRadius=28,hookHeight=0,unknownRadius=false,unknownBoom=false,angleOverride=null}){
  if(!Number.isFinite(radius)||radius<=0||!Number.isFinite(boom)||boom<=0)return null;
  const x=radius-pivotOffset,reachable=x>=0&&x<=boom;
- const tipHeight=reachable?pivotHeight+Math.sqrt(Math.max(0,boom*boom-x*x)):pivotHeight;
+ const tipHeight=reachable?pivotHeight+(Number.isFinite(angleOverride)?x*Math.tan(angleOverride*Math.PI/180):Math.sqrt(Math.max(0,boom*boom-x*x))):pivotHeight;
  const scale=Math.min(640/(Math.max(maxRadius,radius)+5),480/(Math.max(maxBoom+pivotHeight,tipHeight,hookHeight)+1.5));
  const originX=145,groundY=490,pivotX=originX+pivotOffset*scale,pivotY=groundY-pivotHeight*scale;
  const loadX=originX+radius*scale,tipX=reachable?loadX:pivotX+boom*scale,tipY=groundY-tipHeight*scale;
  let hookY=groundY-Math.max(hookHeight,Math.min(tipHeight-2,2))*scale;
  if(hookHeight<=0)hookY=Math.min(groundY-2*scale,tipY+2.5*scale);
- const angle=reachable?Math.acos(x/boom)*180/Math.PI:null;
+ const angle=reachable?(Number.isFinite(angleOverride)?angleOverride:Math.acos(x/boom)*180/Math.PI):null;
  return {scale,originX,groundY,pivotX,pivotY,loadX,tipX,tipY,hookY,angle,reachable,tipHeight,radius,boom,unknownRadius,unknownBoom};
 }

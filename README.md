@@ -131,3 +131,17 @@ Cambiar los apoyos borra longitudes que no existan en la nueva familia, sin redo
 ## Identidad IzÁngel - v4.5.1
 
 La app usa el nombre IzÁngel en el encabezado, título, instalación e informes. El logo original se centra en el encabezado, con encuadre ajustado al dibujo y fusión de su fondo blanco con el fondo de la app. Se incluye en la publicación, caché sin conexión y archivo portable. Los identificadores de análisis y almacenamiento previos se conservan para mantener compatibilidad.
+
+## Camión pluma Tecmaco y gorra LA - v4.6.0
+
+Se cambia el emblema de la gorra por LA de Los Ángeles. Edición con la herramienta integrada de imágenes; indicación: reemplazar solo NY por LA y conservar gorra, letras, colores, gancho y composición. Activo: `logo-izangel.png`.
+
+El catálogo incorpora TECMACO como proveedor, sin asignarle un fabricante/modelo de pluma por semejanza. El usuario informó portador VM 270 8x4 R y unas 17 tn; la ficha oficial Volvo identifica VM como camión, mientras la fotografía ilustrativa adjunta muestra un Iveco Tector. Se conserva el máximo realmente leído de 16.344 kg. La hoja no identifica sector, revisión, pesos de gancho, contrapesos ni base neta/bruta. Se exige ingresar peso real de gancho, conservando las deducciones y el 75% del proyecto.
+
+Se transcriben 12 columnas, 113 capacidades en kg y sus ángulos, con apoyos Máximo/Medio/Mínimo sin traducirlos a porcentajes. La lista de longitudes depende del apoyo. No hay selector TELE porque la hoja no documenta patrones. Las filas de 0° conservan el radio propio de cada columna mediante `columnRadii`, sin introducir huecos artificiales en otras longitudes. En puntos exactos se conserva el ángulo de referencia de la hoja y se estima altura desde R y θ; entre radios se mantiene geometría aproximada, sin interpolar capacidades. La columna rotulada 33,5 m conserva su capacidad pero no calcula altura ni representa el montaje adicional como pluma recta.
+
+La advertencia original de la hoja dice que sus gráficos son solo de referencia y no deben usarse para operar. Por ello los números pueden consultarse, guardarse y aparecer en PDF, pero el estado general es SIN VERIFICAR cuando no hay una falla numérica, nunca APTO. Una sobrecarga sigue siendo NO APTO. Esta restricción se recalcula desde el catálogo al importar, no desde los resultados guardados. Las tres grúas SANY conservan sus 2267 capacidades y las auditorías históricas de 141 columnas / 50 ejemplos.
+
+Trazabilidad y fuentes primarias: [revisión de Tecmaco](docs/tecmaco-audit.md), [transcripción de la foto](docs/tecmaco-source.json).
+
+Validación v4.6.0: 314 pruebas aprobadas y 50/50 coincidencias en la auditoría manual histórica. Se agregan pruebas para las113 capacidades de la foto, radios por columna, posiciones/lingado, estado documental, extensión sin geometría, PDF y reapertura.

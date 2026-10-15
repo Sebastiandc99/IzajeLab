@@ -22,7 +22,7 @@ jobs:
       - name: Preparar sitio estático
         run: |
           mkdir -p _site
-          cp index.html styles.css app.js engine.js field.js planning.js positions.js estimation.js rigging.js data.js sw.js logo-izangel.png icon.svg manifest.webmanifest .nojekyll _site/
+          cp index.html styles.css app.js engine.js field.js planning.js positions.js estimation.js rigging.js data.js tecmaco.js tecmaco-tabla.jpg tecmaco-equipo.jpg sw.js logo-izangel.png icon.svg manifest.webmanifest .nojekyll _site/
       - uses: actions/upload-pages-artifact@v4
         if: github.event_name != 'pull_request'
         with:

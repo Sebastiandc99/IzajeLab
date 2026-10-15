@@ -35,14 +35,17 @@ export function tableAxis(values,value,name,policy='exact'){
  if(!['next-larger','bracket-min','project-conservative'].includes(policy))throw Error('Criterio de tabla no reconocido.');
  return {bounds:[hi-1,hi],used:policy==='bracket-min'?[hi-1,hi]:[hi],derived:true};
 }
+// Algunas hojas incluyen una fila horizontal a 0° con un radio propio por columna.
+// Ese punto no introduce huecos artificiales en las demás columnas.
+export function chartRows(cfg,boom){const axis=cfg.columnRadii?.[String(boom)];return axis?cfg.rows.filter(row=>axis.some(R=>Math.abs(R-row[0])<1e-8)):cfg.rows;}
 export function lookup(cfg,radius,boom){
  const r=number(radius,'radio',.01),L=number(boom,'pluma',.1);
- const ra=tableAxis(cfg.rows.map(row=>row[0]),r,'radio',cfg.radiusPolicy),ba=tableAxis(cfg.booms,L,'pluma',cfg.boomPolicy||'exact');
+ const ba=tableAxis(cfg.booms,L,'pluma',cfg.boomPolicy||'exact'),rows=ba.bounds.length===1?chartRows(cfg,L):cfg.rows,ra=tableAxis(rows.map(row=>row[0]),r,'radio',cfg.radiusPolicy);
  if((ra.derived&&cfg.radiusPolicy==='next-larger'||ba.derived&&(cfg.boomPolicy||'exact')!=='exact')&&!cfg.intermediateSource)throw Error('Falta la nota del manual para resolver estas medidas intermedias.');
  // Con siguiente mayor se lee la celda indicada por el manual, sin interpolar.
  // Para mínimo de vecinos, ambos extremos se usan y deben tener capacidad.
- const bounds=ra.bounds.flatMap(i=>ba.bounds.map(j=>({radius:cfg.rows[i][0],boom:cfg.booms[j],capacity:cfg.rows[i][j+1]})));
- let cells=ra.used.flatMap(i=>ba.used.map(j=>({radius:cfg.rows[i][0],boom:cfg.booms[j],capacity:cfg.rows[i][j+1]})));
+ const bounds=ra.bounds.flatMap(i=>ba.bounds.map(j=>({radius:rows[i][0],boom:cfg.booms[j],capacity:rows[i][j+1]})));
+ let cells=ra.used.flatMap(i=>ba.used.map(j=>({radius:rows[i][0],boom:cfg.booms[j],capacity:rows[i][j+1]})));
  const project=[cfg.radiusPolicy,cfg.boomPolicy].includes('project-conservative');
  if(project&&(cfg.policyOrigin!=='project'||!cfg.intermediateSource))throw Error('Falta identificar el criterio conservador del proyecto.');
  if(cells.some(c=>c.capacity===null))throw Error('Celda vacía: no hay capacidad en la referencia requerida por el criterio de tabla.');
@@ -51,7 +54,7 @@ export function lookup(cfg,radius,boom){
  if(project)cells=bounds.filter(c=>c.capacity!==null);
  const derived=ra.derived||ba.derived,hasMin=(ra.derived&&cfg.radiusPolicy==='bracket-min')||(ba.derived&&cfg.boomPolicy==='bracket-min');
  const capacity=Math.min(...cells.map(c=>c.capacity)),governing=cells.filter(c=>c.capacity===capacity).sort((a,b)=>b.radius-a.radius||b.boom-a.boom)[0];
- return {capacity,usedRadii:project?[governing.radius]:ra.used.map(i=>cfg.rows[i][0]),usedBooms:project?[governing.boom]:ba.used.map(j=>cfg.booms[j]),geometryReferenceBooms:ba.bounds.map(j=>cfg.booms[j]),boom:L,derived,cells,bounds,policyOrigin:project?'project':'table',
+ return {capacity,usedRadii:project?[governing.radius]:ra.used.map(i=>rows[i][0]),usedBooms:project?[governing.boom]:ba.used.map(j=>cfg.booms[j]),geometryReferenceBooms:ba.bounds.map(j=>cfg.booms[j]),boom:L,derived,cells,bounds,policyOrigin:project?'project':'table',chartAngle:cfg.chartAngles?.[String(r)]?.[String(L)]??null,geometryUnavailable:cfg.geometryUnsupportedBooms?.includes(L)||false,
   policySource:derived?cfg.intermediateSource||'Criterio conservador de radios ingresado con la tabla.':'',
   method:!derived?'Celda exacta':project?(cfg.boomPolicy==='exact'?'Menor capacidad entre radios vecinos; referencia superior válida (criterio conservador del proyecto, sin interpolar)':'Menor capacidad entre vecinos; referencia superior válida (criterio conservador del proyecto, sin interpolar)'):hasMin?'Mínimo de celdas contiguas válidas (criterio conservador del manual)':'Siguiente radio/pluma mayor según manual (sin interpolación lineal)'};
 }
@@ -60,7 +63,7 @@ export function craneCheck(cfg,p){
  const chart=lookup(cfg,p.radius,p.boom),gross=grossMass(p),limit=number(p.limit,'límite de utilización',1,75)/100,deduction=number(p.deductionKg,'deducciones');
  const netCapacity=chart.capacity-deduction;if(netCapacity<=0)throw Error('Las deducciones anulan la capacidad tabulada.');
  const percent=gross/netCapacity*100,allowed=netCapacity*limit;
- return {...chart,gross,netCapacity,percent,allowed,headroom:allowed-gross,minimumChart:gross/limit+deduction,pass:percent<=limit*100+1e-9,maxPayload:Math.max(0,allowed-gross+Number(p.loadKg))};
+ return {...chart,gross,netCapacity,percent,allowed,headroom:allowed-gross,minimumChart:gross/limit+deduction,capacityPass:percent<=limit*100+1e-9,pass:percent<=limit*100+1e-9,maxPayload:Math.max(0,allowed-gross+Number(p.loadKg)),documentVerified:!cfg.verificationRestriction,documentRestriction:cfg.verificationRestriction||''};
 }
 // Offset positivo: pivote hacia la carga respecto del eje de giro. Altura punta aproximada; no modela flexión/cabezal.
 export function geometry(radius,boom,p){
@@ -69,6 +72,16 @@ export function geometry(radius,boom,p){
  const angle=deg(Math.acos(x/L)),tipHeight=number(p.pivotHeight,'altura de pivote',0)+Math.sqrt(Math.max(0,L*L-x*x));
  const requiredTip=number(p.landingHeight,'cota base de carga')+number(p.loadHeight,'altura de carga')+number(p.rigHeight,'altura de eslingado')+number(p.headroom,'reserva gancho/cabezal',0.01);
  return {angle,tipHeight,requiredTip,clearance:tipHeight-requiredTip,reach:tipHeight>=requiredTip};
+}
+// En las fotos de referencia el ángulo cargado de la tabla no es acos(R/L).
+// Para puntos exactos se conserva ese ángulo y se estima H desde R y θ.
+export function chartGeometry(cfg,radius,boom,p){
+ if(cfg.geometryUnsupportedBooms?.includes(Number(boom)))return null;
+ const angle=cfg.chartAngles?.[String(radius)]?.[String(boom)];
+ if(cfg.geometryMode!=='source-angle'||!Number.isFinite(angle))return geometry(radius,boom,p);
+ const x=number(radius,'radio',.01)-number(p.pivotOffset,'desplazamiento de pivote',-20,20);if(x<0)throw Error('Radio menor que el desplazamiento del pivote.');
+ const tipHeight=number(p.pivotHeight,'altura pivote')+x*Math.tan(rad(angle)),requiredTip=number(p.landingHeight,'cota base de carga')+number(p.loadHeight,'altura de carga')+number(p.rigHeight,'altura de eslingado')+number(p.headroom,'reserva gancho/cabezal',.01);
+ return {angle,tipHeight,requiredTip,clearance:tipHeight-requiredTip,reach:tipHeight>=requiredTip,sourceReference:true};
 }
 export function radiusFromAngle(boom,angle,offset){return number(offset,'desplazamiento de pivote',-20,20)+number(boom,'pluma',0.1)*Math.cos(rad(number(angle,'ángulo pluma',0,90)));}
 export function candidates(cfg,p){
